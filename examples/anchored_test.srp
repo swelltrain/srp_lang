@@ -1,0 +1,43 @@
+page "anchored_demo" do
+  title "Anchored Options Demo"
+
+  SingleSelect "favorite_language" do
+    text "What is your favorite programming language?"
+    required
+    randomized
+
+    option "Python"
+    option "JavaScript" 
+    option "Ruby"
+    option "Java"
+    option "C++"
+    option "Go"
+    option "None of the above" do
+      anchored
+    end
+    option "Other (please specify)" do
+      anchored
+    end
+  end
+
+  MultiSelect "technologies_used" do
+    text "Which technologies have you used? (Select all that apply)"
+    required
+    randomized
+
+    option "React"
+    option "Vue"
+    option "Angular"
+    option "Svelte"
+    option "jQuery"
+    option "Vanilla JS"
+    option "I haven't used any" do
+      anchored
+    end
+    option "Other frameworks" do
+      anchored
+    end
+  end
+
+  action :complete
+end

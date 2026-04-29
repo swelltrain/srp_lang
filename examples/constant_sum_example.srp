@@ -1,0 +1,57 @@
+# constant_sum_example.srp - Testing ConstantSum question type
+
+page "allocation" do
+  title "Budget Allocation"
+
+  # Basic ConstantSum question with default 100 points
+  ConstantSum "marketing_budget" do
+    text "How would you allocate your marketing budget across these channels?"
+    required
+
+    row "Social Media"
+    row "Email Marketing"
+    row "Print Advertising"
+    row "Online Ads"
+  end
+
+  # ConstantSum with custom sum and special options
+  ConstantSum "business_priorities" do
+    text "Distribute 50 points among these priorities:"
+    required
+    sum_to 50
+    randomize_rows
+    add_other_option
+    add_none_option
+
+    row "Product Quality"
+    row "Customer Service"
+    row "Price Competitiveness"
+    row "Innovation"
+  end
+end
+
+page "time_allocation" do
+  title "Time Allocation"
+
+  # ConstantSum for time allocation (percentage)
+  ConstantSum "time_allocation" do
+    text "What percentage of your work day is spent on each activity?"
+    required
+    sum_to 100
+
+    row "Meetings"
+    row "Email"
+    row "Project Work"
+    row "Planning"
+    row "Administrative Tasks"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+
+  Notification "completion_message" do
+    text "Thank you for your allocation responses!"
+  end
+end

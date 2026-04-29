@@ -1,0 +1,103 @@
+# Example demonstrating randomized page functionality
+# Questions on randomized pages will appear in random order each time
+
+page "intro" do
+  title "Welcome to Our Survey"
+  text "This survey demonstrates randomized question ordering"
+
+  SingleSelect "heard_about_us" do
+    text "How did you hear about us?"
+    required
+
+    option "Social Media"
+    option "Website"
+    option "Friend"
+    option "Advertisement"
+  end
+end
+
+page "preferences" do
+  title "Your Preferences"
+  text "These questions will appear in random order"
+  randomized  # This makes questions appear in random order
+
+  SingleSelect "favorite_color" do
+    text "What's your favorite color?"
+    required
+
+    option "Red"
+    option "Blue"
+    option "Green"
+    option "Yellow"
+  end
+
+  MultiSelect "enjoyed_activities" do
+    text "Which activities do you enjoy?"
+    min_selections 1
+    max_selections 3
+
+    option "Reading"
+    option "Sports"
+    option "Movies"
+    option "Cooking"
+    option "Travel"
+  end
+
+  Rating "customer_service_rating" do
+    text "How important is customer service to you?"
+    required
+    number_of_ranks 5
+  end
+
+  OpenEnded "daily_challenge" do
+    text "What's your biggest challenge in daily life?"
+    required
+  end
+end
+
+page "demographics" do
+  title "About You" 
+  text "Please tell us a bit about yourself (questions randomized)"
+  randomized
+
+  SingleSelect "age_group" do
+    text "What's your age group?"
+    required
+
+    option "18-25"
+    option "26-35" 
+    option "36-45"
+    option "46-55"
+    option "56+"
+  end
+
+  SingleSelect "location" do
+    text "Where are you located?"
+    required
+
+    option "Urban area"
+    option "Suburban area"
+    option "Rural area"
+  end
+
+  SingleSelect "education_level" do
+    text "What's your highest education level?"
+    required
+
+    option "High school"
+    option "Bachelor's degree"
+    option "Master's degree"
+    option "PhD or higher"
+  end
+end
+
+page "feedback" do
+  title "Final Feedback"
+
+  Rating "survey_experience" do
+    text "Overall, how would you rate this survey experience?"
+    required
+    number_of_ranks 5
+    add_why_field
+  end
+end

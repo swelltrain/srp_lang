@@ -1,0 +1,53 @@
+page "markdown_demo" do
+  title "Markdown Text Support Demo"
+  
+  SingleSelect "strawberry_preference" do
+    text "How **much** do you prefer strawberries?"
+    required
+    
+    option "I *absolutely love* them!"
+    option "They're `okay` I guess"
+    option "Not really my __favorite__ fruit"
+    option "I ~~hate~~ strongly dislike them"
+  end
+  
+  OpenEnded "favorite_dessert" do
+    text "Please describe your **favorite** dessert using _rich formatting_:"
+  end
+  
+  MultiSelect "important_features" do
+    text "Which of these **bold** features do you find most `important`?"
+    
+    option "**Fast** performance"
+    option "*Easy* to use interface"
+    option "`Advanced` customization options"
+    option "__Reliable__ customer support"
+    option "~~Cheap~~ Affordable pricing"
+  end
+  
+  SingleSelectMatrix "product_ratings" do
+    text "Rate these **products** on various _criteria_:"
+    required
+    
+    row "**Premium** Coffee"
+    row "*Organic* Tea"
+    row "`Specialty` Hot Chocolate"
+    
+    column "**Quality**"
+    column "*Taste*"
+    column "`Value`"
+    column "__Overall__"
+  end
+  
+  Rating "markdown_recommendation" do
+    text "How likely are you to recommend our **new** _markdown support_ feature?"
+    number_of_ranks 5
+    add_why_field
+  end
+end
+
+page "thank_you" do
+  action :complete
+  title "Thank You!"
+  text "Thanks for testing our **markdown** support! We hope you found it _useful_."
+end

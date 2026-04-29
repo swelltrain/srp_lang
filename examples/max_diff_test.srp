@@ -1,0 +1,48 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "In this section you will compare features to help us understand your priorities."
+  end
+end
+
+page "maxdiff_page" do
+  title "Feature Prioritization"
+
+  MaxDiff "feature_prefs" do
+    text "We are evaluating features."
+    items_per_set 4
+    item "Price"
+    item "Quality"
+    item "Speed of Delivery"
+    item "Customer Support"
+    item "Ease of Use"
+    item "Customization Options"
+    item "Brand Reputation"
+    required
+  end
+end
+
+page "maxdiff_page2" do
+  title "Service Priorities"
+
+  MaxDiff "service_prefs" do
+    text "We are evaluating service attributes."
+    items_per_set 3
+    item "24/7 Availability"
+    item "Response Time"
+    item "Expert Knowledge"
+    item "Friendliness"
+    item "Problem Resolution"
+    randomize_sets
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

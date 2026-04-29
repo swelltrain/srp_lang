@@ -1,0 +1,367 @@
+# Segment-Based Conditional Display Example
+# Demonstrates the new segment feature for user categorization and conditional survey flow
+
+page "service_rating" do
+  title "Service Evaluation"
+  
+  SingleSelectMatrix "service_ratings" do
+    text "Please rate our services on the following aspects:"
+    required
+    
+    row "Customer Support" do
+      action :skip_to, "urgent_feedback", :if_column, "Poor"        # Navigation (existing)
+      segment "support_dissatisfied", :if_column, "Poor"           # Segmentation (new)
+      segment "support_champions", :if_column, "Excellent"         # Another segment
+    end
+    
+    row "Technical Support" do
+      segment "tech_issues", :if_column, "Poor", "Fair"            # Multiple values
+      segment "support_dissatisfied", :if_column, "Poor"           # Add to existing segment
+    end
+    
+    row "Billing Support" do
+      segment "support_dissatisfied", :if_column, "Poor"           # Same segment again
+      segment "billing_satisfied", :if_column, "Excellent", "Good" # Multiple value segment
+    end
+    
+    column "Excellent"
+    column "Good"  
+    column "Fair"
+    column "Poor"
+  end
+end
+
+page "recommendation" do
+  title "Recommendation"
+  
+  SingleSelect "recommendation_likelihood" do
+    text "How likely are you to recommend our services to others?"
+    required
+    
+    option "Very likely" do
+      segment "promoters"
+    end
+    
+    option "Likely" do
+      segment "promoters"  # Same segment for multiple options
+    end
+    
+    option "Neutral"
+    
+    option "Unlikely" do
+      segment "support_dissatisfied"  # Add to existing segment from different question
+    end
+    
+    option "Very unlikely" do
+      segment "support_dissatisfied"  # Multiple sources for same segment
+      segment "detractors"
+    end
+  end
+end
+
+# Conditional pages based on segments - only shown if user is in specified segments
+page "improvement_survey" do
+  title "Help Us Improve"
+  show_only_if "support_dissatisfied", "tech_issues"  # Show for either segment (OR logic)
+  
+  MultiSelect "improvement_areas" do
+    text "What areas need the most improvement? Select all that apply."
+    min_selections 1
+    max_selections 3
+    required
+    
+    option "Response time"
+    option "Staff knowledge" 
+    option "Communication clarity"
+    option "Problem resolution"
+    option "24/7 availability"
+  end
+  
+  OpenEnded "issue_details" do
+    text "Please provide specific details about the issues you experienced:"
+    required
+  end
+end
+
+page "testimonial_request" do
+  title "Share Your Experience"  
+  show_only_if "support_champions", "promoters"  # Show for satisfied customers
+  
+  Notification "testimonial_request" do
+    text "Thank you for the positive feedback! Would you be willing to share a testimonial?"
+  end
+  
+  SingleSelect "testimonial_willingness" do
+    text "Would you like to provide a testimonial about your experience?"
+    required
+    
+    option "Yes, I'd be happy to share my experience"
+    option "Maybe, contact me later"
+    option "No, thank you"
+  end
+end
+
+# Conditional questions within pages
+page "detailed_feedback" do
+  title "Additional Feedback"
+  
+  # This question only appears for dissatisfied customers
+  SingleSelect "dissatisfaction_reason" do
+    text "What is the primary reason for your dissatisfaction?"
+    show_only_if "support_dissatisfied"
+    required
+    
+    option "Poor response time"
+    option "Unhelpful staff"
+    option "Unresolved issues"
+    option "Poor communication"
+    option "Technical difficulties"
+  end
+  
+  # This question only appears for promoters
+  Discussion "service_highlights" do
+    text "What specific aspects of our service would you highlight in a recommendation?"
+    show_only_if "promoters"
+  end
+  
+  # This question appears for customers with technical issues
+  MultiSelect "technical_problems" do
+    text "Which technical areas caused you the most problems?"
+    show_only_if "tech_issues"
+    min_selections 1
+    
+    option "Website functionality"
+    option "Mobile app performance"
+    option "Account access"
+    option "Payment processing"
+    option "Data synchronization"
+  end
+  
+  # This appears for everyone - no show_only_if condition
+  OpenEnded "general_comments" do
+    text "Any other comments or suggestions?"
+  end
+end
+
+# Example of complex segment building across multiple question types
+page "satisfaction_analysis" do
+  title "Overall Satisfaction Analysis"
+  
+  # Build "at_risk_customers" segment from multiple sources
+  SingleSelectMatrix "critical_aspects" do
+    text "Please rate these critical aspects of our service:"
+    required
+    
+    row "Product Quality" do
+      segment "at_risk_customers", :if_column, "Poor"
+    end
+    
+    row "Customer Service" do
+      segment "at_risk_customers", :if_column, "Poor"  # Same segment
+    end
+    
+    row "Value for Money" do
+      segment "at_risk_customers", :if_column, "Poor"  # Same segment
+      segment "price_sensitive", :if_column, "Poor", "Fair"  # Different segment
+    end
+    
+    row "Overall Experience" do
+      segment "highly_satisfied", :if_column, "Excellent"
+    end
+    
+    # Column segments with if_row conditions - segments activated based on which rows are rated poorly
+    column "Excellent" do
+      segment "quality_champions", :if_row, "Product Quality"  # Users who rate product quality as excellent
+      segment "service_champions", :if_row, "Customer Service"  # Users who rate customer service as excellent
+    end
+    
+    column "Good"
+    
+    column "Fair" do
+      segment "needs_improvement", :if_row, "Product Quality", "Customer Service"  # Fair ratings on key areas
+    end
+    
+    column "Poor" do
+      segment "product_issues", :if_row, "Product Quality"      # Poor product quality ratings
+      segment "service_issues", :if_row, "Customer Service"     # Poor customer service ratings
+      segment "pricing_issues", :if_row, "Value for Money"      # Poor value for money ratings
+      segment "experience_issues", :if_row, "Overall Experience"  # Poor overall experience ratings
+    end
+  end
+  
+  SingleSelect "service_continuity" do
+    text "How likely are you to continue using our service in the next 12 months?"
+    required
+    
+    option "Very likely" do
+      segment "loyal_customers"
+    end
+    
+    option "Likely"
+    
+    option "Unlikely" do
+      segment "at_risk_customers"  # Add to segment from option
+    end
+    
+    option "Very unlikely" do
+      segment "at_risk_customers"  # Multiple options add to same segment
+      segment "churn_risk"
+    end
+  end
+end
+
+# Conditional retention survey - only for at-risk customers
+page "retention_survey" do
+  title "Help Us Keep You as a Customer"
+  show_only_if "at_risk_customers"  # Triggered by any of the above conditions
+  
+  Notification "retention_intro" do
+    text "We noticed some concerns in your feedback. We'd love to address them and keep you as a valued customer."
+  end
+  
+  MultiSelect "retention_factors" do
+    text "What would encourage you to continue with our service?"
+    min_selections 1
+    required
+    
+    option "Lower pricing"
+    option "Better customer service"
+    option "Improved product quality"
+    option "More frequent communication"
+    option "Dedicated account manager"
+    option "Additional features"
+    option "Better technical support"
+  end
+  
+  OpenEnded "specific_improvements" do
+    text "Is there anything specific we could do to improve your experience?"
+    required
+  end
+end
+
+# Specific feedback pages based on column segments (if_row conditions)
+page "product_quality_feedback" do
+  title "Product Quality Improvement"
+  show_only_if "product_issues"
+  
+  Notification "quality_feedback_intro" do
+    text "We noticed you rated our product quality as poor. Your feedback is crucial for our product development team."
+  end
+  
+  MultiSelect "product_quality_issues" do
+    text "Which specific product quality issues have you experienced?"
+    min_selections 1
+    required
+    
+    option "Product reliability/durability"
+    option "Features not meeting expectations"
+    option "Performance issues"
+    option "Design/usability problems"
+    option "Quality control issues"
+    option "Compatibility problems"
+  end
+  
+  OpenEnded "quality_issue_details" do
+    text "Please provide specific details about the product quality issues:"
+    required
+  end
+end
+
+page "service_excellence_recognition" do
+  title "Service Excellence Recognition"
+  show_only_if "quality_champions", "service_champions"
+  
+  Notification "excellence_recognition" do
+    text "Thank you for recognizing our excellence! We'd love to know more about what made your experience exceptional."
+  end
+  
+  OpenEnded "excellence_aspects" do
+    text "What specific aspects of our quality or service stood out to you?"
+  end
+  
+  SingleSelect "advisory_board_interest" do
+    text "Would you be interested in participating in our customer advisory board?"
+    
+    option "Yes, I'd love to help improve your services"
+    option "Maybe, contact me with more details"
+    option "No, but thank you for asking"
+  end
+end
+
+page "improvement_priorities" do
+  title "Help Us Prioritize Improvements"
+  show_only_if "needs_improvement"
+  
+  Notification "improvement_priorities_intro" do
+    text "We see areas where we can improve. Help us prioritize what matters most to you."
+  end
+  
+  SingleSelect "improvement_priority" do
+    text "Which area should we focus on improving first?"
+    required
+    
+    option "Product Quality Enhancement"
+    option "Customer Service Training"
+    option "Process Improvements"
+    option "Communication Clarity"
+    option "Response Times"
+  end
+end
+
+# Thank you page for different segments
+page "thank_you_promoters" do
+  title "Thank You!"
+  show_only_if "promoters", "support_champions"
+  
+  Notification "promoters_thanks" do
+    text "Thank you for your positive feedback! We truly appreciate customers like you and will continue working hard to exceed your expectations."
+  end
+  
+  action :complete
+end
+
+page "thank_you_improvement" do
+  title "Thank You for Your Feedback"
+  show_only_if "support_dissatisfied", "at_risk_customers"
+  
+  Notification "improvement_thanks" do
+    text "Thank you for taking the time to share your concerns. Your feedback is invaluable and will help us improve our services. We will be in touch soon to address your specific issues."
+  end
+  
+  action :complete
+end
+
+page "thank_you_general" do
+  title "Survey Complete"
+  
+  Notification "general_thanks" do
+    text "Thank you for participating in our service evaluation survey. Your feedback helps us serve you better!"
+  end
+  
+  action :complete
+end
+
+page "urgent_feedback" do
+  title "Urgent Feedback Required"
+  
+  Notification "urgent_feedback_intro" do
+    text "We're sorry to hear about your poor experience with our customer support. Your feedback is very important to us."
+  end
+  
+  OpenEnded "support_issues" do
+    text "Please describe the specific issues you encountered with our customer support:"
+    required
+  end
+  
+  SingleSelect "issue_urgency" do
+    text "How urgently do you need this issue resolved?"
+    required
+    
+    option "Immediately - this is blocking my work"
+    option "Within 24 hours"
+    option "Within a week"
+    option "Not urgent, but needs attention"
+  end
+  
+  action :complete
+end

@@ -1,0 +1,141 @@
+# form_full_example.srp
+# Exercises all form-supported question types for visual validation.
+# Run with:
+#   bin/survey_srp examples/form_full_example.srp \
+#     --style form --submission-url https://httpbin.org/post \
+#     --outfile examples/html/form_full_example.html
+
+page "intro" do
+  title "Registration Form"
+
+  Notification "intro_notice" do
+    text "Please complete all required fields. Fields marked * are required."
+  end
+end
+
+page "text_inputs" do
+  title "Text Inputs"
+
+  OpenEnded "full_name" do
+    text "* Full Name"
+    required
+  end
+
+  Number "age_number" do
+    text "Age (18–120)"
+    min_value 18
+    max_value 120
+    required
+  end
+
+  FillInTheBlank "fill_sentence" do
+    text "My name is ___ and I live in ___."
+  end
+end
+
+page "selects" do
+  title "Selection Questions"
+
+  SingleSelect "shirt_size" do
+    text "* Shirt size"
+    required
+    option "XS"
+    option "S"
+    option "M"
+    option "L"
+    option "XL"
+    option "XXL"
+  end
+
+  MultiSelect "hobbies" do
+    text "Hobbies (select all that apply)"
+    option "Reading"
+    option "Hiking"
+    option "Cooking"
+    option "Gaming"
+    option "Travel"
+  end
+
+  Dropdown "country" do
+    text "* Country"
+    required
+    option "United States"
+    option "Canada"
+    option "United Kingdom"
+    option "Australia"
+    option "Other"
+  end
+
+  ButtonCheckbox "features_wanted" do
+    text "Desired product features"
+    button "Fast delivery"
+    button "Low price"
+    button "Premium quality"
+    button "24/7 support"
+  end
+end
+
+page "scales" do
+  title "Scale Questions"
+
+  Rating "overall_rating" do
+    text "* Overall satisfaction"
+    number_of_ranks 5
+    required
+  end
+
+  NPS "recommend_score" do
+    text "How likely are you to recommend us? (0 = not at all, 10 = extremely likely)"
+    required
+  end
+
+  Slider "budget_slider" do
+    text "Monthly budget ($)"
+    min_value 0
+    max_value 1000
+    required
+  end
+
+  ButtonRating "service_quality" do
+    text "Service quality"
+    button "Poor"
+    button "Below Average"
+    button "Average"
+    button "Good"
+    button "Excellent"
+  end
+end
+
+page "structured" do
+  title "Structured Inputs"
+
+  DatePicker "event_date" do
+    text "* Preferred event date"
+    required
+  end
+
+  PhoneNumber "contact_phone" do
+    text "Phone number"
+  end
+
+  Age "your_age" do
+    text "* Your age"
+    required
+  end
+
+  USAddress "billing_address" do
+    text "Billing address"
+  end
+
+  InternationalAddress "shipping_address" do
+    text "Shipping address (if outside US)"
+  end
+end
+
+page "done" do
+  action :complete
+
+  Notification "thank_you" do
+    text "Thank you for completing the form! Your submission is being processed."
+  end
+end

@@ -1,0 +1,31 @@
+page "test_page" do
+  title "Q&A Special Characters Test"
+
+  SingleSelect "test_question" do
+    text "Q&A: What time (hour:minute) works for you?"
+
+    option "Morning (8:00-12:00)" do
+      action terminate
+    end
+
+    option "Afternoon (12:00-5:00)"
+
+    option "Evening (5:00-9:00)" do
+      action skip_to "completion"
+    end
+  end
+end
+
+page "middle_page" do
+  title "Feedback & Comments"
+
+  OpenEnded "feedback" do
+    text "Share your thoughts (optional):"
+  end
+end
+
+page "completion" do
+  action :complete
+  title "Success & Thank You!"
+  text "Survey complete."
+end

@@ -1,0 +1,179 @@
+# Example demonstrating column actions with if_row conditions
+# Shows symmetrical functionality to row actions with if_column
+
+page "satisfaction_survey" do
+  title "Product Satisfaction Survey"
+  text "Please rate each product on various attributes"
+
+  # Matrix with both row and column actions
+  SingleSelectMatrix "product_ratings" do
+    text "How would you rate each product?"
+    required
+    
+    # Row actions - existing functionality
+    row "Product A"
+    row "Product B" do
+      action "complete", :if_column, "Poor"
+    end
+    row "Critical Service" do
+      action "complete", :if_column, "Poor"
+    end
+    
+    # Column actions - new functionality  
+    column "Excellent"
+    column "Good"
+    column "Fair"
+    column "Poor" do
+      action "complete", :if_row, "Product A"
+    end
+  end
+end
+
+page "service_evaluation" do
+  title "Service Evaluation"
+  text "Please evaluate our services"
+
+  SingleSelectMatrix "service_ratings" do
+    text "Rate each service aspect"
+    required
+    
+    row "Customer Support"
+    row "Technical Support" 
+    row "Billing Support"
+    row "Account Management"
+    
+    # Multiple column actions with different conditions
+    column "Excellent" do
+      action "complete"  # Complete survey if any service rated excellent
+    end
+    column "Good"
+    column "Needs Improvement"
+    column "Poor" do
+      action "complete", :if_row, "Customer Support"
+    end
+  end
+end
+
+page "feature_importance" do
+  title "Feature Importance"
+  
+  SingleSelectMatrix "feature_importance" do
+    text "How important are these features to you?"
+    required
+    
+    row "Speed"
+    row "Reliability" 
+    row "User Interface"
+    row "Price"
+    
+    # Column actions based on specific feature importance
+    column "Not Important"
+    column "Somewhat Important"
+    column "Very Important"
+    column "Critical" do
+      action "complete", :if_row, "Price"
+    end
+  end
+end
+
+page "product_b_feedback" do
+  title "Product B Feedback"
+  "You indicated Product B was poor. We'd like to understand why."
+  
+  OpenEnded "product_b_issues" do
+    text "What specific issues did you encounter with Product B?"
+    required
+  end
+  
+  action :complete
+end
+
+page "urgent_feedback" do
+  title "Critical Service Issue"
+  "You indicated our Critical Service was poor. This requires immediate attention."
+  
+  OpenEnded "critical_issue_description" do
+    text "Please describe the critical issue you experienced:"
+    required
+  end
+  
+  SingleSelect "issue_urgency" do
+    text "How urgently does this need to be addressed?"
+    required
+    
+    option "Immediately"
+    option "Within 24 hours"
+    option "Within a week"
+  end
+  
+  action :complete
+end
+
+page "improvement_feedback" do
+  title "Product A Improvement"
+  "You rated Product A as poor. Help us improve it."
+  
+  MultiSelect "product_a_improvements" do
+    text "What areas of Product A need improvement?"
+    min_selections 1
+    max_selections 3
+    
+    option "Performance"
+    option "User Interface"
+    option "Features"
+    option "Reliability"
+    option "Documentation"
+  end
+  
+  action :complete
+end
+
+page "detailed_feedback" do
+  title "Customer Support Feedback" 
+  "You indicated poor customer support. Please provide details."
+  
+  OpenEnded "support_experience" do
+    text "What was your experience with customer support?"
+    required
+  end
+  
+  Rating "support_contact_likelihood" do
+    text "How likely are you to contact support again?"
+    number_of_ranks 5
+  end
+  
+  action :complete
+end
+
+page "priority_features" do
+  title "Price-Focused Features"
+  "Since price is critical to you, which cost-saving features matter most?"
+  
+  MultiSelect "cost_reduction_priorities" do
+    text "Select your top priorities for cost reduction:"
+    min_selections 1
+    max_selections 4
+    
+    option "Volume discounts"
+    option "Long-term contracts"
+    option "Self-service options"
+    option "Reduced support levels"
+    option "Basic feature tiers"
+  end
+  
+  action :complete
+end
+
+page "thank_you" do
+  title "Thank You!"
+  "Thank you for your positive feedback! Your satisfaction is important to us."
+  
+  action :complete
+end
+
+page "completion" do
+  title "Survey Complete"
+  "Thank you for your detailed feedback. We will use this to improve our products and services."
+  
+  action :complete
+end

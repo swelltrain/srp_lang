@@ -1,0 +1,108 @@
+# heatmap_variants_example.srp - Testing TimedHeatMap and StickyNote question types
+
+page "timed_analysis" do
+  title "Timed Heat Map Analysis"
+  
+  # TimedHeatMap question
+  question1 = TimedHeatMap "timed_importance" do
+    text "You have 30 seconds to identify the most important areas:"
+    image "https://example.com/landing-page.png"
+    required
+    min_clicks 2
+    max_clicks 8
+    randomize_categories
+    
+    category "Primary Navigation" do
+      color "red"
+    end
+    
+    category "Hero Section" do
+      color "blue"
+    end
+    
+    category "Feature Cards" do
+      color "green"
+    end
+    
+    category "Call to Action" do
+      color "orange"
+    end
+  end
+end
+
+page "sticky_feedback" do
+  title "Sticky Note Feedback"
+  
+  # StickyNote question with categories
+  question1 = StickyNote "improvement_notes" do
+    text "Place sticky notes on areas that need improvement:"
+    image "https://example.com/app-interface.png"
+    required
+    min_clicks 1
+    max_clicks 5
+    
+    category "Usability Issues" do
+      color "yellow"
+    end
+    
+    category "Design Problems" do
+      color "pink"
+    end
+    
+    category "Content Issues" do
+      color "lightblue"
+    end
+  end
+  
+  # StickyNote without click limits
+  question2 = StickyNote "opportunity_notes" do
+    text "Add notes wherever you see opportunities:"
+    image "https://example.com/opportunity-map.png"
+    randomize_categories
+    
+    category "Positive Feedback"
+    category "Suggestions"
+    category "Questions"
+    category "Concerns"
+  end
+end
+
+page "mixed_interface" do
+  title "Mixed Interface Testing"
+  
+  # Regular HeatMap
+  question1 = HeatMap "interaction_areas" do
+    text "Identify key interaction areas:"
+    image "https://example.com/interface-design.png"
+    required
+    
+    category "Header"
+    category "Main Content"
+    category "Sidebar"
+  end
+  
+  # TimedHeatMap
+  question2 = TimedHeatMap "quick_scan" do
+    text "Quick scan - 15 seconds:"
+    image "https://example.com/quick-scan-target.png"
+    max_clicks 3
+    
+    category "First Impression"
+    category "Eye Catching"
+  end
+  
+  # StickyNote
+  question3 = StickyNote "feedback_notes" do
+    text "Leave feedback notes:"
+    image "https://example.com/feedback-area.png"
+
+    category "Improvements"
+    category "Compliments"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your heat map and sticky note feedback!"
+end

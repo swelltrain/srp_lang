@@ -1,0 +1,80 @@
+# clean_example.srp - Using clean syntax without variable assignments
+
+page "page1" do
+  title "First Page"
+  
+  OpenEnded "feelings" do
+    text "How do you feel about this?"
+    required
+  end
+
+  SingleSelect "design_preference" do
+    text "What's your preference?"
+    required
+    randomized
+    
+    option "I like plain" do
+      action terminate
+    end
+    
+    option "Seasonal for me" do
+      action skip_to "page3"
+    end
+    
+    option "Gimme trendy"
+  end
+end
+
+page "page2" do
+  title "Tell me about plain"
+  
+  OpenEnded "plain_design_feedback" do
+    text "What do you like about plain design?"
+  end
+end
+
+page "page3" do
+  title "Seasonal Preferences"
+  
+  SingleSelect "season_preference" do
+    text "Which season do you prefer?"
+    
+    option "Spring"
+    option "Summer" 
+    option "Fall"
+    option "Winter"
+  end
+end
+
+page "page4" do
+  title "Multi-select Example"
+  
+  MultiSelect "activities" do
+    text "Which activities do you enjoy? (Select 2-4 options)"
+    required
+    min_selections 2
+    max_selections 4
+    randomized
+    add_other_option
+    add_why_field
+    
+    option "Reading"
+    option "Sports"
+    option "Movies"
+    option "Cooking"
+    option "Travel"
+    option "Gaming"
+  end
+end
+
+page "page13" do
+  action :terminate
+  title "Thank you!"
+  text "Thank you for your time, but you don't fit the profile."
+end
+
+page "page14" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your time, you will be granted your reward."
+end

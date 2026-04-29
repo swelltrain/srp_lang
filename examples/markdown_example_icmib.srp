@@ -1,0 +1,25 @@
+page "markdown_demo" do
+  title "Markdown Text Support Demo - ICMIB Style"
+  
+  SingleSelect "strawberry_preference" do
+    text "How **much** do you prefer strawberries?"
+    required
+    
+    option "I *absolutely love* them!"
+    option "They're `okay` I guess"
+    option "Not really my __favorite__ fruit"
+    option "I ~~hate~~ strongly dislike them"
+  end
+  
+  Rating "markdown_recommendation" do
+    text "How likely are you to recommend our **new** _markdown support_ feature?"
+    number_of_ranks 5
+    add_why_field
+  end
+end
+
+page "thank_you" do
+  action :complete
+  title "Thank You!"
+  text "Thanks for testing our **markdown** support! We hope you found it _useful_."
+end

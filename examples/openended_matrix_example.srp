@@ -1,0 +1,55 @@
+# openended_matrix_example.srp - Testing OpenEndedMatrix question type
+
+page "feedback" do
+  title "Detailed Feedback"
+  
+  # Basic OpenEndedMatrix - single column for general feedback
+  question1 = OpenEndedMatrix "service_feedback" do
+    text "Please provide detailed feedback on each aspect of our service:"
+    required
+    
+    row "Customer Service"
+    row "Product Quality"
+    row "Delivery Speed"
+    row "Website Experience"
+    
+    column "Your Comments"
+  end
+  
+  # OpenEndedMatrix with multiple columns for structured feedback
+  question2 = OpenEndedMatrix "department_feedback" do
+    text "For each department, please tell us what they do well and what could be improved:"
+    randomize_rows
+    
+    row "Sales Team"
+    row "Support Team"
+    row "Billing Department"
+    
+    column "What they do well"
+    column "Areas for improvement"
+  end
+end
+
+page "product_feedback" do
+  title "Product Evaluation"
+  
+  # OpenEndedMatrix for product features
+  question1 = OpenEndedMatrix "product_features" do
+    text "Please share your thoughts on these product features:"
+    
+    row "User Interface"
+    row "Performance"
+    row "Reliability"
+    row "Documentation"
+    
+    column "Strengths"
+    column "Weaknesses" 
+    column "Suggestions"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thanks for providing detailed feedback through our OpenEndedMatrix questions!"
+end

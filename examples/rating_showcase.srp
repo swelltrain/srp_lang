@@ -1,0 +1,95 @@
+# rating_showcase.srp - ICMIB rating examples with interactive stars
+# Run with: ruby survey_dsl.rb --file examples/icmib/rating_showcase.srp --style icmib
+
+page "welcome" do
+  title "Rating Showcase"
+  
+  Notification "welcome_info" do
+    text "This example demonstrates the interactive star rating system in the ICMIB style. Hover over stars to see the preview, then click to set your rating!"
+  end
+end
+
+page "basic_ratings" do
+  title "Basic Star Ratings"
+  
+  Rating "overall_satisfaction" do
+    text "How satisfied are you with our service overall?"
+    required
+    number_of_ranks 5
+    add_why_field
+  end
+  
+  Rating "support_experience" do
+    text "Rate your experience with our support team"
+    number_of_ranks 5
+  end
+  
+  Rating "nps_score" do
+    text "How likely are you to recommend us? (Net Promoter Score)"
+    required
+    number_of_ranks 10
+    add_why_field
+  end
+end
+
+page "service_ratings" do
+  title "Service Quality Ratings"
+  
+  Rating "product_quality" do
+    text "Product Quality"
+    required
+    number_of_ranks 5
+  end
+  
+  Rating "delivery_speed" do
+    text "Delivery Speed"
+    required
+    number_of_ranks 5
+  end
+  
+  Rating "service_responsiveness" do
+    text "Customer Service Responsiveness"
+    required
+    number_of_ranks 5
+    add_why_field
+  end
+  
+  Rating "value_for_money" do
+    text "Value for Money"
+    required
+    number_of_ranks 5
+  end
+end
+
+page "detailed_feedback" do
+  title "Detailed Feedback"
+  
+  SingleSelect "most_impressive_aspect" do
+    text "What aspect impressed you most?"
+    
+    option "Interactive user interface"
+    option "Responsive design"
+    option "Clear visual feedback"
+    option "Smooth animations"
+    option "Overall user experience"
+  end
+  
+  Discussion "improvement_suggestions" do
+    text "Please share any specific suggestions for improvement"
+  end
+  
+  Rating "rating_system_experience" do
+    text "Overall experience with this rating system (1-7)"
+    number_of_ranks 7
+    add_why_field
+  end
+end
+
+page "thank_you" do
+  action :complete
+  title "Thank You!"
+  
+  Notification "completion_message" do
+    text "Thank you for testing our interactive star rating system! Your feedback helps us create better user experiences."
+  end
+end

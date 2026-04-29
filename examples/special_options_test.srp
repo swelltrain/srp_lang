@@ -1,0 +1,70 @@
+survey "Special Options Test"
+
+page "q1_page" do
+  SingleSelect "q1" do
+    text "Which option do you prefer?"
+    option "Option A"
+    option "Option B"
+    add_none_option do
+      segment "none_selected"
+      action :skip_to, "end_page"
+    end
+    add_other_option do
+      segment "other_selected"
+    end
+  end
+end
+
+page "q2_page" do
+  show_only_if "none_selected"
+  SingleSelect "q2" do
+    text "This page only shows if none was selected (show_only_if test)"
+    option "Yes"
+    option "No"
+  end
+end
+
+page "q3_page" do
+  MultiSelect "q3" do
+    text "Select all that apply"
+    option "Choice A"
+    option "Choice B"
+    option "Choice C"
+    add_none_option
+    add_dont_know_option
+    add_other_option
+  end
+end
+
+page "q4_page" do
+  Dropdown "q4" do
+    text "Pick one from the dropdown"
+    option "Alpha"
+    option "Beta"
+    option "Gamma"
+    add_none_option
+    add_other_option
+  end
+end
+
+page "q5_page" do
+  SingleSelectMatrix "q5" do
+    text "Rate each item"
+    row "Item A"
+    row "Item B"
+    column "Poor"
+    column "Good"
+    column "Excellent"
+    add_none_option
+    add_dont_know_option
+    add_other_row do
+      segment "other_row_selected", :if_column, "Excellent"
+    end
+  end
+end
+
+page "end_page" do
+  Notification "end_note" do
+    text "Thank you for completing the survey!"
+  end
+end

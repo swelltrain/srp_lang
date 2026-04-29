@@ -1,0 +1,77 @@
+page "intro" do
+  title "Age Verification Survey"
+  "Welcome! This survey demonstrates the new if_value action feature for OpenEnded questions."
+end
+
+page "age_question" do
+  title "Age Verification"
+
+  OpenEnded "age" do
+    text "Please indicate your age."
+    required
+    numeric :min_value, 0, :max_value, 100
+    # Terminate if under age 18 or over age 69
+    action terminate, :if_value, "< 18"
+    action terminate, :if_value, "> 69"
+  end
+end
+
+page "demographic" do
+  title "Demographics"
+  
+  OpenEnded "income_range" do
+    text "What is your income range (in thousands)?"
+    numeric :min_value, 0, :max_value, 500
+    # Skip to special high earner section if income >= 100k
+    action :skip_to, "high_earner", :if_value, ">= 100"
+  end
+end
+
+page "regular_survey" do
+  title "Survey Questions"
+  
+  SingleSelect "shopping_frequency" do
+    text "How often do you shop online?"
+    required
+    
+    option "Daily"
+    option "Weekly"
+    option "Monthly"
+    option "Rarely"
+  end
+  
+  action :complete
+end
+
+page "high_earner" do
+  title "High Earner Questions"
+  
+  OpenEnded "luxury_interest" do
+    text "What luxury item category interests you most?"
+    # Complete survey if they mention specific high-value items
+    action complete, :if_value, "== cars, jewelry, watches, art, yachts"
+  end
+  
+  SingleSelect "luxury_investment" do
+    text "Do you invest in luxury goods?"
+    required
+    
+    option "Yes, frequently"
+    option "Occasionally"
+    option "No, never"
+  end
+  
+  action :complete
+end
+
+page "thanks" do
+  title "Thank You"
+  "Thank you for participating in our survey!"
+  action :complete
+end
+
+page "disqualified" do
+  title "Thank You"
+  "Unfortunately, you do not qualify for this survey at this time."
+  action :terminate
+end

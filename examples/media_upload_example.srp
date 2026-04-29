@@ -1,0 +1,29 @@
+# MediaUpload question type example
+
+page "upload_page" do
+  title "File Upload Survey"
+
+  MediaUpload "profile_photo" do
+    text "Please upload your profile photo."
+    required
+    accept "image/*"
+    multiple false
+  end
+
+  MediaUpload "supporting_docs" do
+    text "Upload any supporting documents (optional)."
+    accept ".pdf,.docx,.xlsx"
+    max_files 3
+  end
+
+  MediaUpload "video_testimonial" do
+    text "Share a video testimonial (optional)."
+    accept "video/*"
+  end
+end
+
+page "end_page" do
+  title "Thank You"
+  "Your files have been received."
+  action :complete
+end

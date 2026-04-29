@@ -1,0 +1,85 @@
+# basic_example.srp - Basic ICMIB-styled survey with conditional logic
+# Run with: ruby survey_dsl.rb --file examples/icmib/basic_example.srp --style icmib
+
+page "welcome" do
+  # are we sure we want to show a welcome page?
+  title "Welcome to Our Survey"
+
+  Notification "welcome_message" do
+    text "Thank you for taking the time to share your feedback with us. This survey should take about 3-5 minutes to complete."
+  end
+end
+
+page "preferences" do
+  title "Your Preferences"
+
+  OpenEnded "service_feeling" do
+    text "How do you feel about this service overall?"
+    required
+  end
+
+  SingleSelect "update_preference" do
+    # this is a comment in a question
+    text "What's your preference for future updates?" # this is another comment
+    required
+
+    option "I prefer minimal changes" do
+      action skip_to "conservative"
+    end
+
+    option "I like seasonal updates" do
+      action skip_to "seasonal"
+    end
+
+    option "Give me the latest trends"
+  end
+end
+
+page "seasonal" do
+  title "Seasonal Updates"
+
+  SingleSelect "seasonal_influence" do
+    text "Which season influences your preferences most?"
+
+    option "Spring - Fresh starts"
+    option "Summer - Bright and energetic"
+    option "Fall - Warm and cozy"
+    option "Winter - Clean and minimal"
+  end
+
+  MultiSelect "seasonal_update_types" do
+    text "What types of seasonal updates interest you most?"
+    min_selections 1
+    max_selections 3
+
+    option "Color schemes"
+    option "Feature highlights"
+    option "Content themes"
+    option "User interface changes"
+  end
+end
+
+page "conservative" do
+  title "Conservative Approach"
+
+  OpenEnded "design_values" do
+    text "What aspects of the current design do you value most?"
+  end
+end
+
+page "feedback" do
+  title "Final Thoughts"
+
+  Discussion "additional_feedback" do
+    text "Any additional feedback or suggestions for improvement?"
+  end
+end
+
+page "thank_you" do
+  action :complete
+  title "Thank You!"
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey! Your feedback helps us improve our service for everyone."
+  end
+end

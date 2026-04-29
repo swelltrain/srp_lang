@@ -1,0 +1,86 @@
+# heatmap_example.srp - Testing HeatMap DSL structure
+
+page "user_interface" do
+  title "User Interface Heat Map"
+  
+  # Basic HeatMap with categories and colors
+  question1 = HeatMap "ui_importance" do
+    text "Click on the areas of this interface that you find most important:"
+    image "https://example.com/ui-mockup.png"
+    required
+    min_clicks 3
+    max_clicks 10
+
+    category "Navigation" do
+      color "blue"
+    end
+    
+    category "Content Area" do
+      color "green"
+    end
+    
+    category "Sidebar" do
+      color "orange"
+    end
+    
+    category "Footer" do
+      color "purple"
+    end
+  end
+end
+
+page "website_analysis" do
+  title "Website Analysis"
+  
+  # HeatMap with randomized categories and click limits
+  question1 = HeatMap "website_improvements" do
+    text "Identify areas that need improvement on our website:"
+    image "https://example.com/website-screenshot.png"
+    required
+    min_clicks 1
+    max_clicks 5
+    randomize_categories
+    
+    category "Header Section" do
+      color "#ff0000"
+    end
+    
+    category "Product Display" do
+      color "#00ff00"
+    end
+    
+    category "Shopping Cart" do
+      color "#0000ff"
+    end
+    
+    category "Search Function" do
+      color "#ffff00"
+    end
+    
+    category "Contact Information" do
+      color "#ff00ff"
+    end
+  end
+end
+
+page "mobile_app" do
+  title "Mobile App Heat Map"
+  
+  # HeatMap without click limits
+  question1 = HeatMap "frequent_features" do
+    text "Tap on the features you use most frequently:"
+    image "https://example.com/mobile-app-interface.png"
+
+    category "Home Screen"
+    category "Settings"
+    category "Profile"
+    category "Messages"
+    category "Search"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your heat map feedback!"
+end

@@ -1,0 +1,21 @@
+# Test for invalid column actions
+
+page "test_page" do
+  title "Invalid Column Action Test"
+  
+  SingleSelectMatrix "test_matrix" do
+    text "Test matrix with invalid column action"
+    required
+    
+    row "Test Row"
+    
+    column "Test Column" do
+      action "complete", :if_row, "Test Row"
+    end
+  end
+end
+
+page "end_page" do
+  title "End Page"
+  action :complete
+end

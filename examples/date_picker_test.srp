@@ -1,0 +1,32 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Please provide your date information."
+  end
+end
+
+page "dates_page" do
+  title "Date Information"
+
+  DatePicker "birth_date" do
+    text "What is your date of birth?"
+    min_date "1924-01-01"
+    max_date "2006-12-31"
+    required
+  end
+
+  DatePicker "start_date" do
+    text "When did you start using our product?"
+    min_date "2020-01-01"
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

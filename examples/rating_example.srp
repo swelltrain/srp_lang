@@ -1,0 +1,53 @@
+# rating_example.srp - Testing Rating and RatingMatrix question types
+
+page "satisfaction" do
+  title "Satisfaction Survey"
+  
+  # Basic Rating question with default 5-point scale
+  question1 = Rating "service_satisfaction" do
+    text "How satisfied are you with our service?"
+    required
+    add_why_field
+  end
+  
+  # Rating question with custom 10-point scale
+  question2 = Rating "nps_rating" do
+    text "On a scale of 1-10, how likely are you to recommend us?"
+    required
+    number_of_ranks 10
+  end
+end
+
+page "detailed_rating" do
+  title "Detailed Ratings"
+  
+  # RatingMatrix with default 5-point scale
+  question1 = RatingMatrix "service_aspects" do
+    text "Please rate each aspect of our service:"
+    required
+    add_why_field
+    randomize_rows
+    
+    row "Customer Service"
+    row "Product Quality"
+    row "Delivery Speed"
+    row "Value for Money"
+  end
+  
+  # RatingMatrix with custom 7-point scale
+  question2 = RatingMatrix "feature_ratings" do
+    text "Rate these features (1-7 scale):"
+    required
+    number_of_ranks 7
+    
+    row "Ease of Use"
+    row "Performance"
+    row "Design"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your ratings!"
+end

@@ -1,0 +1,96 @@
+# options_example.srp - Testing add_none, add_dont_know, add_other, add_why options
+
+page "preferences" do
+  title "Your Preferences"
+  
+  # SingleSelect with all options
+  question1 = SingleSelect "music_preference" do
+    text "What's your favorite type of music?"
+    required
+    
+    option "Rock"
+    option "Pop"
+    option "Classical"
+    option "Jazz"
+    
+    add_none_option
+    add_dont_know_option  
+    add_other_option
+    add_why_field
+  end
+  
+  # MultiSelect with options
+  question2 = MultiSelect "social_media" do
+    text "Which social media platforms do you use?"
+    max_selections 5
+    
+    option "Facebook"
+    option "Instagram" 
+    option "Twitter"
+    option "LinkedIn"
+    option "TikTok"
+    
+    add_none_option
+    add_dont_know_option
+    add_other_option
+    add_why_field
+  end
+  
+  # SingleSelect dropdown style with options
+  question3 = SingleSelect "shopping_method" do
+    text "What's your preferred shopping method?"
+    style dropdown
+    
+    option "Online"
+    option "In-store"
+    option "Mobile app"
+    
+    add_none_option
+    add_dont_know_option
+    add_other_option
+  end
+end
+
+page "ratings" do
+  title "Rate Our Service"
+  
+  # SingleSelectBipolar (no add_other_option - not applicable)
+  question1 = SingleSelectBipolar "service_rating" do
+    text "How would you rate our service on these aspects?"
+    left_label "Very Poor"
+    right_label "Excellent"
+    scale 5
+    
+    row "Customer Service"
+    row "Product Quality" 
+    row "Delivery Speed"
+    
+    add_none_option
+    add_dont_know_option
+    add_why_field
+  end
+  
+  # SingleSelectMatrix with options
+  question2 = SingleSelectMatrix "feature_importance" do
+    text "How important are these features?"
+    
+    row "Price"
+    row "Quality"
+    row "Brand reputation"
+    
+    column "Not Important"
+    column "Somewhat Important"
+    column "Very Important"
+    
+    add_none_option
+    add_dont_know_option
+    add_other_option
+    add_why_field
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thanks for testing our enhanced survey options!"
+end

@@ -1,0 +1,47 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "This survey tests the Slider question type."
+  end
+end
+
+page "single_slider_page" do
+  title "Single Slider"
+
+  Slider "satisfaction" do
+    text "How satisfied are you with our product?"
+    min_value 0
+    max_value 10
+    step 1
+    default_value 5
+    min_label "Not at all"
+    max_label "Extremely"
+    add_why_field
+    required
+  end
+end
+
+page "multi_slider_page" do
+  title "Multi-Slider"
+
+  Slider "attribute_ratings" do
+    text "Rate each product attribute:"
+    min_value 1
+    max_value 7
+    default_value 4
+    row "Easy to use"
+    row "Fast performance"
+    row "Affordable price"
+    required
+  end
+end
+
+page "completion" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing the slider test survey!"
+  end
+end

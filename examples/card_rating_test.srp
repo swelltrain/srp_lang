@@ -1,0 +1,55 @@
+page "intro" do
+  title "Card Rating Study"
+
+  Notification "welcome" do
+    text "Welcome! In this survey you will rate a series of features and product concepts one at a time."
+  end
+
+  SingleSelect "experience" do
+    text "How long have you been using our product?"
+    option "Less than 6 months"
+    option "6–12 months"
+    option "1–2 years"
+    option "More than 2 years"
+    required
+  end
+end
+
+page "feature_importance" do
+  title "Feature Importance"
+
+  CardRating "feature_importance" do
+    text "Rate each feature by how important it is to you"
+    item "Easy to use"
+    item "Fast performance"
+    item "Affordable price"
+    item "Great support"
+    item "Frequent updates"
+    number_of_ranks 5
+    randomize_items
+    required
+  end
+end
+
+page "concept_appeal" do
+  title "Concept Appeal"
+
+  CardRating "concept_appeal" do
+    text "How appealing is each product concept to you?"
+    item "AI-powered recommendations"
+    item "Offline mode"
+    item "Team collaboration tools"
+    item "Mobile app"
+    number_of_ranks 5
+    required
+  end
+end
+
+page "thank_you" do
+  title "Complete"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing this survey! Your feedback helps us prioritize the features that matter most."
+  end
+end

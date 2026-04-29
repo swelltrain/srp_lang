@@ -1,0 +1,26 @@
+# Test file for comment feature - for client: Test Client
+
+page "intro" do  # This is the introduction page
+  title "Welcome Survey"  # Page title with comment
+  
+  # This is a standalone comment about the first question
+  OpenEnded "respondent_name" do
+    text "What's your name?"  # Simple name question
+    required  # Name is required
+  end
+
+  SingleSelect "preference_choice" do  # Main preference question
+    text "What's your preference?"
+    required
+    
+    option "I like plain"  # Basic option
+    option "Seasonal for me"  # Seasonal choice
+    option "Gimme trendy"  # Trendy option
+  end
+end
+
+page "thanks" do  # Final page
+  title "Thank You"  # Gratitude title
+  "Thanks for participating!"  # Thank you message
+  action complete  # Survey completion
+end

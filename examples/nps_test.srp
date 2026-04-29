@@ -1,0 +1,32 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Thank you for taking our survey. We'd love to hear how we're doing."
+  end
+end
+
+page "nps_page" do
+  title "Your Feedback"
+
+  NPS "recommend_score" do
+    text "How likely are you to recommend us to a friend or colleague?"
+    min_label "Not at all likely"
+    max_label "Extremely likely"
+    add_why_field
+    required
+  end
+
+  NPS "satisfaction_score" do
+    text "How satisfied are you with our product overall?"
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey. Your feedback is greatly appreciated!"
+  end
+end

@@ -1,0 +1,71 @@
+# code_as_example.srp
+# Demonstrates the code_as attribute for options.
+#
+# code_as lets you display one label to the respondent while persisting
+# a separate coded value (numeric ID, short code, etc.) in storage and
+# sync payloads. Coded values carry forward through options_from references.
+
+page "product_interest" do
+  title "Products You're Interested In"
+
+  Notification "intro" do
+    text "Tell us about the products you're interested in. We use internal product codes behind the scenes."
+  end
+
+  # SingleSelect — inline code_as keyword arg
+  SingleSelect "primary_product" do
+    text "Which product are you most interested in?"
+    required
+
+    option "Starter Kit",    code_as: 101
+    option "Professional",   code_as: 102
+    option "Enterprise",     code_as: 103
+    add_other_option
+  end
+
+  # MultiSelect — same inline form
+  MultiSelect "additional_products" do
+    text "Which other products interest you? (Select all that apply)"
+
+    option "Starter Kit",    code_as: 101
+    option "Professional",   code_as: 102
+    option "Enterprise",     code_as: 103
+    option "Add-on: Support",  code_as: 201
+    option "Add-on: Training", code_as: 202
+  end
+end
+
+page "region_and_tier" do
+  title "Region & Pricing Tier"
+
+  # Dropdown — same code_as support
+  Dropdown "region" do
+    text "Which region are you in?"
+    placeholder "-- Select a region --"
+    required
+
+    option "North America", code_as: "NA"
+    option "Europe",        code_as: "EU"
+    option "Asia-Pacific",  code_as: "APAC"
+    option "Latin America", code_as: "LATAM"
+    option "Middle East & Africa", code_as: "MEA"
+  end
+
+  # options_from carry-forward — codes travel with the labels
+  SingleSelect "confirm_primary" do
+    text "You selected a primary product above — confirm your choice:"
+    options_from "primary_product"
+    required
+  end
+
+  MultiSelect "confirm_additional" do
+    text "You also showed interest in these — confirm which ones to include in your quote:"
+    options_from "additional_products"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Your selections have been recorded. Our team will follow up with a quote tailored to your region and chosen products."
+end

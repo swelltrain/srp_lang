@@ -1,0 +1,33 @@
+# Test file for unknown attribute validation
+
+page "test_page" do
+  title "Unknown Attributes Test"
+  
+  OpenEnded "opinion" do
+    text "What is your opinion?"
+    required
+    # These should generate warnings for OpenEnded
+    max_length 500
+    placeholder "Type your response here"
+  end
+  
+  MediaUpload "file_upload" do
+    text "Please upload your file"
+    required
+    # These should generate warnings for MediaUpload
+    invalid_attribute "some value"
+    max_size "10MB"
+    file_types "jpg,png,pdf"
+  end
+  
+  MediaUpload "another_upload" do
+    text "Another upload question"
+    # This should also generate a warning
+    placeholder "Drop files here"
+  end
+end
+
+page "end_page" do
+  title "Complete"
+  action :complete
+end

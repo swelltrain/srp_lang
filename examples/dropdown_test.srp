@@ -1,0 +1,56 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Please answer the following dropdown questions."
+  end
+end
+
+page "dropdown_page" do
+  title "Dropdown Selections"
+
+  Dropdown "country" do
+    text "Select your country"
+    option "United States"
+    option "Canada"
+    option "United Kingdom"
+    option "Australia"
+    option "Germany"
+    option "France"
+    option "Japan"
+    add_other_option
+    required
+  end
+
+  Dropdown "education" do
+    text "What is your highest level of education?"
+    option "Less than high school"
+    option "High school diploma or GED"
+    option "Some college"
+    option "Associate's degree"
+    option "Bachelor's degree"
+    option "Master's degree"
+    option "Doctoral or professional degree"
+  end
+
+  Dropdown "industry" do
+    text "Which industry do you work in?"
+    option "Technology"
+    option "Healthcare"
+    option "Finance"
+    option "Education"
+    option "Retail"
+    option "Manufacturing"
+    option "Government"
+    add_other_option
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

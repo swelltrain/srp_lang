@@ -1,0 +1,28 @@
+# minimal_dynamic_test.srp - Minimal test for dynamic options debugging
+# Run with: ruby survey_dsl.rb --file examples/minimal_dynamic_test.srp --outfile examples/simple/minimal_dynamic_test.html
+
+# Page 1: Source question
+page "page1" do
+  title "Page 1: Choose Colors"
+
+  MultiSelect "colors" do
+    text "Which colors do you like?"
+    option "Red"
+    option "Blue"
+    option "Green"
+    required
+  end
+end
+
+# Page 2: Dependent question
+page "page2" do
+  title "Page 2: Rank Colors"
+
+  MultiSelect "color_ranking" do
+    text "Which of your chosen colors is best for a website?"
+    options_from "colors"
+    required
+  end
+
+  action :complete
+end

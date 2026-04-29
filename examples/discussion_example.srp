@@ -1,0 +1,52 @@
+# discussion_example.srp - Testing Discussion question type
+
+page "community_feedback" do
+  title "Community Discussion"
+  
+  # Basic Discussion question - required
+  question1 = Discussion "community_guidelines" do
+    text "What are your thoughts on the recent changes to our community guidelines?"
+    required
+  end
+  
+  # Discussion question - optional
+  question2 = Discussion "ux_improvements" do
+    text "Share your ideas for improving our user experience. What features would you like to see added or changed?"
+  end
+  
+  # Discussion question for specific topic
+  question3 = Discussion "new_member_support" do
+    text "How do you think we can better support new members in our community? Please share specific suggestions or experiences."
+    required
+  end
+end
+
+page "product_discussion" do
+  title "Product Feedback Discussion"
+  
+  # Discussion about product roadmap
+  question1 = Discussion "roadmap_priorities" do
+    text "Looking at our product roadmap, what features do you think should be our top priority and why?"
+  end
+  
+  # Discussion about user experience
+  question2 = Discussion "recent_experience" do
+    text "Describe a recent experience you had with our product. What went well? What could be improved?"
+    required
+  end
+end
+
+page "open_forum" do
+  title "Open Forum"
+  
+  # General discussion
+  question1 = Discussion "open_forum" do
+    text "This is an open forum for any additional thoughts, suggestions, or feedback you'd like to share with our team."
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for participating in our discussion and sharing your valuable insights!"
+end

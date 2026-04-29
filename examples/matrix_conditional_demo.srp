@@ -1,0 +1,61 @@
+page "satisfaction_matrix" do
+  title "Service Satisfaction Evaluation"
+
+  SingleSelectMatrix "service_aspects_rating" do
+    text "Please rate each service aspect:"
+    required
+
+    row "Customer Service" do
+      # Skip to escalation if Customer Service = Poor AND Technical Support = Fair
+      action :skip_to, "escalation", :if_column, "Poor", :if_row, "Technical Support", "Fair"
+    end
+
+    row "Product Quality" do
+      # Skip to improvement survey if more than 2 services rated Poor
+      action :skip_to, "improvement_survey", :if_column_count, "Poor", :greater_than, 2
+    end
+
+    row "Technical Support" do
+      # Terminate if Technical Support = Poor AND Customer Service = Poor
+      action :terminate, :if_column, "Poor", :if_row, "Customer Service", "Poor"
+    end
+
+    row "Billing Experience"
+    row "Account Management"
+
+    column "Excellent"
+    column "Good"
+    column "Fair" 
+    column "Poor"
+  end
+end
+
+page "escalation" do
+  title "Priority Follow-up"
+  "We'll contact you within 24 hours to address your service concerns."
+  action :complete
+end
+
+page "improvement_survey" do
+  title "Help Us Improve"
+  
+  MultiSelect "improvement_suggestions" do
+    text "Which improvements would help most? (Select all that apply)"
+    min_selections 1
+    required
+    
+    option "Staff training"
+    option "Faster response times"
+    option "Better processes"
+    option "More resources"
+    option "Updated technology"
+  end
+  
+  action :complete
+end
+
+page "thank_you" do
+  title "Thank You"
+  "Thank you for your feedback!"
+  action :complete
+end

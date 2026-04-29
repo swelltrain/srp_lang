@@ -1,0 +1,59 @@
+page "service_evaluation" do
+  title "Service Evaluation Matrix"
+
+  SingleSelectMatrix "service_rating_matrix" do
+    text "Please rate our services on the following aspects:"
+    required
+
+    row "Customer Service" do
+      # Terminate if Customer Service = Poor AND Product Quality = Poor
+      action terminate, :if_column, "Poor", :if_row, "Product Quality", "Poor"
+
+      # Skip to escalation if Customer Service = Poor AND Technical Support = Fair
+      action :skip_to, "escalation", :if_column, "Poor", :if_row, "Technical Support", "Fair"
+    end
+
+    row "Product Quality" do
+      # Skip to improvement survey if more than 2 services rated Poor
+      action :skip_to, "improvement_survey", :if_column_count, "Poor", :greater_than, 2
+    end
+
+    row "Technical Support"
+    row "Billing Experience"
+    row "Account Management"
+
+    column "Excellent"
+    column "Good"
+    column "Fair"
+    column "Poor"
+  end
+end
+
+page "escalation" do
+  title "Priority Follow-up Required"
+  "We'll prioritize your concerns and contact you within 24 hours."
+  action :complete
+end
+
+page "improvement_survey" do
+  title "Help Us Improve"
+  
+  MultiSelect "improvement_priorities" do
+    text "What specific improvements would help most?"
+    min_selections 1
+    required
+    
+    option "Faster response times"
+    option "Better staff training"
+    option "Improved processes"
+    option "More resources"
+  end
+  
+  action :complete
+end
+
+page "thank_you" do
+  title "Thank You"
+  "Thank you for your valuable feedback!"
+  action :complete
+end

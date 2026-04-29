@@ -1,0 +1,50 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Please tell us about your preferences."
+  end
+end
+
+page "features_page" do
+  title "Feature Preferences"
+
+  ButtonCheckbox "important_features" do
+    text "Which features are most important to you? (Select all that apply)"
+    button "Price"
+    button "Quality"
+    button "Speed"
+    button "Support"
+    button "Ease of Use"
+    add_why_field
+    required
+  end
+
+  ButtonCheckbox "limited_choice" do
+    text "Select up to 2 features you would pay extra for:"
+    button "Priority Support"
+    button "Advanced Analytics"
+    button "Custom Integrations"
+    button "Dedicated Account Manager"
+    min_selections 1
+    max_selections 2
+  end
+
+  ButtonCheckbox "randomized_features" do
+    text "Which of the following apply to your organization?"
+    button "Small team (under 10)"
+    button "Remote-first"
+    button "Fast-growing"
+    button "Enterprise"
+    randomize_buttons
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

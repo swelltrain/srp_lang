@@ -1,0 +1,93 @@
+page "welcome" do
+  title "Welcome"
+  "This is a profile survey and it will take less than 5 minutes."
+end
+
+# Demographic pages
+page "demographics_1" do
+  title "Demographics"
+  randomized
+  SingleSelect "gender" do
+    text "What is your gender?"
+    required
+    option "Male" do
+      action skip_to "disqualified"
+    end
+    option "Female"
+    option "Other"
+  end
+  SingleSelect "age_group" do
+    text "What is your age group?"
+    required
+    option "Under 18"
+    option "18–24"
+    option "25–34"
+    option "35–44"
+    option "45–54"
+    option "55+"
+  end
+  SingleSelect "education_level" do
+    text "What is your highest level of education?"
+    required
+    option "High school"
+    option "Some college"
+    option "Bachelor's degree"
+    option "Graduate degree"
+  end
+end
+
+page "demographics_2" do
+  title "Demographics"
+  randomized
+  SingleSelect "employment_status" do
+    text "What is your employment status?"
+    required
+    option "Employed full-time"
+    option "Employed part-time"
+    option "Unemployed"
+    option "Student"
+    option "Retired"
+  end
+  SingleSelect "household_income" do
+    text "What is your household income?"
+    required
+    option "Under $25,000"
+    option "$25,000–$49,999"
+    option "$50,000–$74,999"
+    option "$75,000–$99,999"
+    option "$100,000+"
+  end
+  SingleSelect "marital_status" do
+    text "What is your marital status?"
+    required
+    option "Single"
+    option "Married"
+    option "Divorced"
+    option "Widowed"
+  end
+end
+
+group "demographics", "demographics_1", "demographics_2" do
+  randomize
+end
+
+page "feeling" do
+  title "Your Experience"
+  Discussion "recent_feelings" do
+    text "How have you been feeling over the last three months?"
+    required
+  end
+end
+
+page "disqualified" do
+  title "Not Eligible"
+  "Thank you for your interest. Unfortunately, you do not qualify for this survey."
+  action :terminate
+end
+
+page "thank_you" do
+  title "Thank You"
+  "Thank you for completing the survey!"
+  action :complete
+end
+

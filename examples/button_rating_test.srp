@@ -1,0 +1,49 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Please rate the following aspects of your experience."
+  end
+end
+
+page "rating_page" do
+  title "Satisfaction Ratings"
+
+  ButtonRating "satisfaction" do
+    text "How satisfied are you with our service overall?"
+    button "Very Dissatisfied"
+    button "Dissatisfied"
+    button "Neutral"
+    button "Satisfied"
+    button "Very Satisfied"
+    add_why_field
+    required
+  end
+
+  ButtonRating "ease_of_use" do
+    text "How would you rate the ease of use?"
+    button "Very Difficult"
+    button "Difficult"
+    button "Moderate"
+    button "Easy"
+    button "Very Easy"
+  end
+
+  ButtonRating "recommendation" do
+    text "How likely are you to recommend us to a friend?"
+    button "Very Unlikely"
+    button "Unlikely"
+    button "Neutral"
+    button "Likely"
+    button "Very Likely"
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

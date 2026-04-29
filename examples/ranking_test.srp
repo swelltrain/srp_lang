@@ -1,0 +1,36 @@
+page "preferences" do
+  title "Feature Priorities"
+
+  Ranking "top_priorities" do
+    text "Rank these features in order of importance (1 = most important)"
+    required
+    randomize_items
+    add_why_field
+
+    item "Easy to use"
+    item "Fast performance"
+    item "Attractive design"
+    item "Affordable price"
+    item "Great support"
+    item "Regular updates"
+  end
+end
+
+page "feedback" do
+  title "Improvement Areas"
+
+  Ranking "improvement_areas" do
+    text "Rank these improvement areas by priority"
+    required
+
+    item "User interface"
+    item "Documentation"
+    item "Customer service"
+    item "Bug fixes"
+    item "New features"
+  end
+
+  OpenEnded "additional_comments" do
+    text "Any additional comments?"
+  end
+end

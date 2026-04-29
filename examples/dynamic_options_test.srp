@@ -1,0 +1,201 @@
+# dynamic_options_example.srp - Comprehensive test of dynamic options/rows/columns functionality
+
+    # Page 1: Source questions that provide options for later questions
+    page "source_questions" do
+      title "Source Questions"
+
+      Notification "intro" do
+        text "These questions will populate options in later questions based on your selections."
+      end
+
+      SingleSelect "favorite_fruits" do
+        text "Which fruit is your favorite? (Select your top choice)"
+        option "Apples"
+        option "Bananas"
+        option "Oranges"
+        option "Grapes"
+        option "Strawberries"
+        option "Mangoes"
+        required
+      end
+
+      MultiSelect "preferred_colors" do
+        text "Which colors do you prefer? (Select all that apply)"
+        option "Red"
+        option "Blue"
+        option "Green"
+        option "Yellow"
+        option "Purple"
+        option "Orange"
+        required
+      end
+
+      SingleSelectMatrix "product_ratings" do
+        text "How would you rate these products?"
+        required
+
+        row "Laptop"
+        row "Phone"
+        row "Tablet"
+
+        column "Poor"
+        column "Fair"
+        column "Good"
+        column "Excellent"
+      end
+
+      MultiSelect "interests" do
+        text "What are your interests? (Select all that apply)"
+        option "Technology"
+        option "Sports"
+        option "Music"
+        option "Travel"
+        option "Cooking"
+        option "Reading"
+        required
+      end
+    end
+
+    # Page 2: Dynamic options from single_select
+    page "dynamic_single_select" do
+      title "Dynamic Single Select Options"
+
+      Notification "explanation_single" do
+        text "These questions use your previous answers to populate their options."
+      end
+
+      OpenEnded "fruit_preference_detail" do
+        text "Why did you choose {{favorite_fruits}}?"
+        required
+      end
+    end
+
+    # Page 3: Dynamic options from multi_select
+    page "dynamic_multi_select" do
+      title "Dynamic Multi Select Options"
+
+      Notification "explanation_multi" do
+        text "These questions are populated from your color preferences."
+      end
+
+      MultiSelect "color_rankings" do
+        text "From your preferred colors, which would you use for a website? (Select all that apply)"
+        options_from "preferred_colors"
+        required
+      end
+
+      SingleSelect "favorite_color" do
+        text "From your preferred colors, which is your absolute favorite?"
+        options_from "preferred_colors"
+        required
+      end
+    end
+
+    # Page 4: Dynamic rows from matrix
+    page "dynamic_matrix_rows" do
+      title "Dynamic Matrix Rows"
+
+      Notification "explanation_rows" do
+        text "This matrix uses rows from your product ratings."
+      end
+
+      SingleSelectMatrix "product_purchase_intent" do
+        text "How likely are you to purchase each product you rated?"
+        rows_from "product_ratings"
+        required
+
+        column "Very Unlikely"
+        column "Unlikely"
+        column "Neutral"
+        column "Likely"
+        column "Very Likely"
+      end
+
+      MultiSelectMatrix "product_features" do
+        text "Which features are important for each product?"
+        rows_from "product_ratings"
+        required
+
+        column "Price"
+        column "Quality"
+        column "Brand"
+        column "Design"
+      end
+    end
+
+    # Page 5: Dynamic columns from matrix
+    page "dynamic_matrix_columns" do
+      title "Dynamic Matrix Columns"
+
+      Notification "explanation_columns" do
+        text "This matrix uses columns from your product ratings."
+      end
+
+      SingleSelectMatrix "rating_justification" do
+        text "For each rating level, how important is it to you?"
+        columns_from "product_ratings"
+        required
+
+        row "Very Important"
+        row "Somewhat Important"
+        row "Not Important"
+      end
+    end
+
+    # Page 6: Dynamic rows AND columns from matrices
+    page "dynamic_both" do
+      title "Dynamic Rows and Columns"
+
+      Notification "explanation_both" do
+        text "This matrix uses both rows and columns from your previous answers."
+      end
+
+      SingleSelectMatrix "product_rating_comparison" do
+        text "Compare your product ratings"
+        rows_from "product_ratings"
+        columns_from "product_ratings"
+      end
+    end
+
+    # Page 7: Complex dynamic options
+    page "complex_dynamic" do
+      title "Complex Dynamic Scenarios"
+
+      Notification "explanation_complex" do
+        text "More complex examples of dynamic options."
+      end
+
+      SingleSelect "interest_detail" do
+        text "Which interest would you like to explore more?"
+        options_from "interests"
+        required
+      end
+
+      MultiSelect "color_and_interest" do
+        text "From your interests, which would you associate with your preferred colors?"
+        options_from "interests"
+      end
+
+      SingleSelectMatrix "interest_ratings" do
+        text "How much time do you spend on each interest?"
+        rows_from "interests"
+        required
+
+        column "Never"
+        column "Rarely"
+        column "Sometimes"
+        column "Often"
+        column "Daily"
+      end
+    end
+
+    # Page 8: Completion
+    page "thank_you" do
+      title "Thank You!"
+
+      Notification "completion_message" do
+        text "Thank you for testing the dynamic options functionality! All your answers were saved and used to populate dependent questions."
+      end
+
+      action :complete
+    end

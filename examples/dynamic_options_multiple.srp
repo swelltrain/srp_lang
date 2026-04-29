@@ -1,0 +1,155 @@
+# dynamic_options_multiple.srp - Multi-source dynamic options demonstration
+#
+# Shows options_from, rows_from, and columns_from pulling from multiple
+# source questions. Values are deduplicated (union) and populated
+# progressively as each source is answered.
+
+  # Page 1: Source questions — fruits and vegetables
+  page "food_sources" do
+    title "Food Preferences"
+
+    Notification "intro" do
+      text "We'll ask about your food preferences, then combine them in later questions."
+    end
+
+    MultiSelect "favorite_fruits" do
+      text "Which fruits do you enjoy?"
+      option "Apples"
+      option "Bananas"
+      option "Oranges"
+      option "Strawberries"
+      option "Mangoes"
+      required
+    end
+
+    MultiSelect "favorite_vegetables" do
+      text "Which vegetables do you enjoy?"
+      option "Broccoli"
+      option "Carrots"
+      option "Spinach"
+      option "Peppers"
+      option "Tomatoes"
+      required
+    end
+  end
+
+  # Page 2: More source questions — drinks and snacks
+  page "more_sources" do
+    title "More Preferences"
+
+    MultiSelect "favorite_drinks" do
+      text "Which drinks do you enjoy?"
+      option "Coffee"
+      option "Tea"
+      option "Juice"
+      option "Water"
+      option "Soda"
+      required
+    end
+
+    SingleSelect "top_snack" do
+      text "What is your go-to snack?"
+      option "Chips"
+      option "Nuts"
+      option "Fruit"
+      option "Yogurt"
+      option "Chocolate"
+      required
+    end
+  end
+
+  # Page 3: Multi-source options_from — combine fruits + vegetables into one list
+  page "combined_options" do
+    title "Combined Food Choices"
+
+    Notification "explain_combined" do
+      text "The following questions combine your fruit and vegetable selections into a single option list."
+    end
+
+    SingleSelect "overall_favorite_food" do
+      text "From all the fruits and vegetables you selected, which is your absolute favorite?"
+      options_from "favorite_fruits"
+      options_from "favorite_vegetables"
+      required
+    end
+
+    MultiSelect "would_grow_at_home" do
+      text "Which of these fruits and vegetables would you grow at home?"
+      options_from "favorite_fruits"
+      options_from "favorite_vegetables"
+    end
+  end
+
+  # Page 4: Three sources combined
+  page "three_sources" do
+    title "All Consumables"
+
+    Notification "explain_three" do
+      text "This question pulls from fruits, vegetables, AND drinks — three source questions combined."
+    end
+
+    MultiSelect "picnic_basket" do
+      text "You're packing a picnic. Which of these would you bring?"
+      options_from "favorite_fruits"
+      options_from "favorite_vegetables"
+      options_from "favorite_drinks"
+    end
+  end
+
+  # Page 5: Multi-source rows_from on a matrix
+  page "combined_matrix_rows" do
+    title "Combined Matrix Rows"
+
+    Notification "explain_matrix" do
+      text "This matrix uses rows from both your fruit and vegetable selections."
+    end
+
+    SingleSelectMatrix "food_frequency" do
+      text "How often do you eat each of these?"
+      rows_from "favorite_fruits"
+      rows_from "favorite_vegetables"
+
+      column "Daily"
+      column "Weekly"
+      column "Monthly"
+      column "Rarely"
+    end
+
+    MultiSelectMatrix "food_occasions" do
+      text "When do you typically eat each of these?"
+      rows_from "favorite_fruits"
+      rows_from "favorite_vegetables"
+
+      column "Breakfast"
+      column "Lunch"
+      column "Dinner"
+      column "Snack"
+    end
+  end
+
+  # Page 6: Multi-source columns_from on a matrix
+  page "combined_matrix_columns" do
+    title "Combined Matrix Columns"
+
+    Notification "explain_columns" do
+      text "This matrix uses columns from multiple sources."
+    end
+
+    SingleSelectMatrix "food_pairing" do
+      text "Rate how well each drink pairs with each food."
+      rows_from "favorite_drinks"
+      columns_from "favorite_fruits"
+      columns_from "favorite_vegetables"
+    end
+  end
+
+  # Page 7: Completion
+  page "thank_you" do
+    title "Thank You"
+
+    Notification "done" do
+      text "Thanks for testing multi-source dynamic options! Your selections from multiple questions were combined, deduplicated, and used to populate dependent questions progressively."
+    end
+
+    action :complete
+  end

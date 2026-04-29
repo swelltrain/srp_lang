@@ -1,0 +1,44 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Please fill out the following numeric questions."
+  end
+end
+
+page "number_page" do
+  title "Numeric Inputs"
+
+  Number "age" do
+    text "What is your age?"
+    min_value 18
+    max_value 120
+    allow_decimals false
+    unit_label "years"
+    placeholder "Enter your age"
+    required
+  end
+
+  Number "income" do
+    text "What is your approximate annual household income?"
+    min_value 0
+    unit_label "USD"
+    placeholder "Enter amount"
+  end
+
+  Number "weight" do
+    text "What is your current weight?"
+    min_value 0.1
+    max_value 500.0
+    unit_label "lbs"
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing our survey!"
+  end
+end

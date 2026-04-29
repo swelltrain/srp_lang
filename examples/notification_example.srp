@@ -1,0 +1,84 @@
+# Example demonstrating Notification question functionality
+# Shows both explicit Notification syntax and bare string automatic conversion
+
+page "welcome" do
+  title "Welcome"
+  "Welcome to our survey! We appreciate your time and feedback."
+end
+
+page "intro" do
+  title "Survey Introduction"
+  
+  # Explicit Notification syntax
+  Notification "survey_duration" do
+    text "This survey will take approximately 5 minutes to complete."
+  end
+  
+  # Regular question after notification
+  SingleSelect "ready_to_begin" do
+    text "Are you ready to begin?"
+    required
+    
+    option "Yes, let's start"
+    option "I need more information first"
+  end
+end
+
+page "section_break" do
+  "You're doing great! Let's continue with a few more questions."
+end
+
+page "preferences" do
+  title "Your Preferences"
+  
+  # Another explicit notification
+  Notification "section_intro" do
+    text "The next few questions are about your preferences and experiences."
+  end
+  
+  MultiSelect "topic_interests" do
+    text "Which of the following topics interest you most?"
+    min_selections 1
+    max_selections 3
+    
+    option "Technology"
+    option "Science" 
+    option "Arts & Culture"
+    option "Sports"
+    option "Travel"
+  end
+  
+  Rating "customer_service_importance" do
+    text "How important is customer service to you?"
+    required
+    number_of_ranks 5
+  end
+end
+
+page "mid_survey_message" do
+  "Thank you for your responses so far. We have just a few more questions."
+end
+
+page "feedback" do
+  title "Final Questions"
+  
+  OpenEnded "important_experience" do
+    text "What's the most important thing we should know about your experience?"
+    required
+  end
+  
+  SingleSelect "recommendation_likelihood" do
+    text "How likely are you to recommend us to a friend?"
+    required
+    
+    option "Very likely"
+    option "Somewhat likely"  
+    option "Neither likely nor unlikely"
+    option "Somewhat unlikely"
+    option "Very unlikely"
+  end
+end
+
+page "the_end" do
+  "Thank you for participating in our survey! Your feedback is valuable to us and will help us improve our services. You are awesome!"
+end

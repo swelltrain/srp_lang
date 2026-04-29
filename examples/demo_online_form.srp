@@ -1,0 +1,105 @@
+# demo-online-form
+
+page "welcome" do
+  title "What Kind of Traveler Are You?"
+
+  Notification "intro" do
+    text "This is a live demo — play along and see where you land!"
+  end
+
+  SingleSelect "travel_style" do
+    text "Pick the vacation that sounds most like you."
+    required
+
+    option "Beach — sun, sand, zero agenda" do
+      segment "beach"
+    end
+
+    option "Mountains — hiking, fresh air, unplugged" do
+      segment "adventure"
+    end
+
+    option "City — food, culture, museums, nightlife" do
+      segment "city"
+    end
+
+    option "Staycation — home is where the heart is" do
+      segment "homebody"
+    end
+  end
+
+  SingleSelect "beach_debate" do
+    text "Once and for all — where do you stand?"
+    show_only_if "beach"
+    required
+
+    option "Ocean swimming only — waves are the point"
+    option "Pool at the resort — I'm here to relax, not fight the current"
+    option "I sit under an umbrella and read. Do not disturb."
+  end
+end
+
+page "bucket_list" do
+  title "Dream Destinations"
+
+  MultiSelect "places" do
+    text "Which of these are on your bucket list? (pick as many as you want)"
+    randomized
+    add_other_option
+
+    option "Kyoto, Japan"
+    option "Patagonia, Argentina/Chile"
+    option "Amalfi Coast, Italy"
+    option "Iceland"
+    option "New Orleans, USA"
+    option "Marrakech, Morocco"
+    option "New Zealand"
+    option "Maldives"
+    option "Cape Town, South Africa"
+  end
+
+  Slider "ideal_trip_length" do
+    text "Your ideal trip length?"
+    min_value 2
+    max_value 21
+    default_value 7
+    min_label "Long weekend"
+    max_label "Three weeks"
+    show_value
+  end
+
+  ButtonRating "packing_style" do
+    text "How do you pack?"
+
+    button "Carry-on only"
+    button "One checked bag"
+    button "I bring everything"
+  end
+end
+
+page "ratings" do
+  title "Your Last Trip"
+
+  Rating "last_trip_rating" do
+    text "How would you rate your most recent trip?"
+    required
+    number_of_ranks 5
+    add_why_field
+  end
+
+  NPS "recommend_destination" do
+    text "How likely are you to recommend that destination to a friend?"
+    min_label "Not a chance"
+    max_label "Book it immediately"
+    required
+  end
+end
+
+page "done" do
+  title "Safe travels!"
+  action :complete
+
+  Notification "farewell" do
+    text "You just saw an SRP Form in action — branching logic, ratings, sliders, and more, all from a single plain-text file."
+  end
+end

@@ -1,0 +1,147 @@
+# Group-Segments Example
+# This demonstrates using groups with segments for AND logic evaluation
+
+page "pet_ownership" do
+  title "Pet Ownership Survey"
+  
+  MultiSelect "pets_owned" do
+    text "Which pets do you currently own?"
+    
+    option "Dog" do
+      segment "dog_owner"
+    end
+    
+    option "Cat" do
+      segment "cat_owner"  
+    end
+    
+    option "Bird" do
+      segment "bird_owner"
+    end
+    
+    option "Fish" do
+      segment "fish_owner"
+    end
+  end
+  
+  SingleSelect "vet_visits" do
+    text "How often do you visit the vet?"
+    
+    option "Monthly" do
+      segment "frequent_vet_user"
+    end
+    
+    option "Every few months" do
+      segment "regular_vet_user"
+    end
+    
+    option "Yearly" do
+      segment "annual_vet_user"
+    end
+    
+    option "Rarely" do
+      segment "infrequent_vet_user"
+    end
+  end
+end
+
+# Create groups that contain segment references for AND logic
+# This group represents people who own both dogs AND cats
+group "dog_and_cat_owners", "dog_owner", "cat_owner"
+
+# This group represents people who use vet services frequently OR regularly  
+group "active_vet_users", "frequent_vet_user", "regular_vet_user"
+
+# This group represents people who own dogs AND use vet services actively
+group "engaged_dog_owners", "dog_owner", "frequent_vet_user"
+group "engaged_dog_owners", "dog_owner", "regular_vet_user"
+
+# NOTE: Direct segment group() syntax needs more work
+# For now, we can use group references in show_only_if directly
+
+# Page that only shows to people who own both dogs AND cats
+page "multi_pet_care" do  
+  title "Caring for Multiple Pet Types"
+  show_only_if "dog_and_cat_owners"
+  
+  SingleSelect "biggest_challenge" do
+    text "What's your biggest challenge caring for both dogs and cats?"
+    
+    option "Different feeding schedules"
+    option "Managing their interactions"
+    option "Double vet bills"
+    option "Time management"
+  end
+end
+
+# Page that shows to engaged dog owners (dogs AND active vet use)
+page "dog_health_program" do
+  title "Advanced Dog Health Program"
+  show_only_if "engaged_dog_owners"
+  
+  MultiSelect "health_interests" do
+    text "Which advanced health topics interest you?"
+    min_selections 1
+    
+    option "Preventive care protocols"
+    option "Nutrition optimization"
+    option "Exercise physiology"
+    option "Senior dog care"
+    option "Breed-specific health"
+  end
+end
+
+# Advanced example: Combining group logic with regular segments
+page "premium_services" do
+  title "Premium Pet Services"
+  
+  SingleSelect "premium_interest" do
+    text "Are you interested in our premium pet care package?"
+    # Show this question to people who are either:
+    # 1. Dog AND cat owners (group AND logic), OR
+    # 2. Bird owners (regular segment OR logic)
+    show_only_if "dog_and_cat_owners", "bird_owner"
+    
+    option "Yes, tell me more"
+    option "Maybe, need more info"
+    option "No, not interested"
+  end
+  
+  # This question shows complex nested logic
+  OpenEnded "custom_needs" do
+    text "Please describe your specific pet care needs:"
+    # Show only to people who are engaged dog owners AND expressed interest
+    # This demonstrates mixing group references with regular segments
+    show_only_if "engaged_dog_owners"
+  end
+end
+
+# NOTE: Advanced segment group() syntax with additional conditions
+# This would require further development to fully support
+
+page "vet_partnership" do
+  title "Veterinary Partnership Program"
+  show_only_if "active_vet_users"
+  
+  Notification "partnership_info" do
+    text "Based on your active veterinary engagement, you may be eligible for our partnership program with local veterinarians."
+  end
+  
+  SingleSelect "partnership_interest" do
+    text "Would you like to learn more about our vet partnership program?"
+    
+    option "Yes, please contact me"
+    option "Send me information by email"
+    option "Not interested right now"
+  end
+end
+
+page "thank_you" do
+  title "Thank You"
+  
+  Notification "completion" do
+    text "Thank you for completing our pet ownership survey!"
+  end
+  
+  action :complete
+end

@@ -1,0 +1,48 @@
+# fill_blank_example.srp - Testing FillInTheBlank question type
+
+page "personal_info" do
+  title "Personal Information"
+  
+  # Basic fill in the blank with single blank
+  question1 = FillInTheBlank "personal_intro" do
+    text "My name is ___ and I am ___ years old."
+    required
+  end
+  
+  # Fill in the blank with multiple blanks in a sentence
+  question2 = FillInTheBlank "work_hobby" do
+    text "I work as a ___ at ___ company, and my favorite hobby is ___."
+    required
+  end
+end
+
+page "preferences" do
+  title "Preferences"
+  
+  # Fill in the blank for preferences
+  question1 = FillInTheBlank "preferences" do
+    text "My favorite color is ___, my favorite food is ___, and I prefer to vacation in ___."
+  end
+  
+  # Fill in the blank with longer text
+  question2 = FillInTheBlank "wfh_experience" do
+    text "The best thing about working from home is ___ because it allows me to ___. However, the biggest challenge is ___ which I try to overcome by ___."
+    required
+  end
+end
+
+page "story" do
+  title "Complete the Story"
+  
+  # Story completion with multiple blanks
+  question1 = FillInTheBlank "story_completion" do
+    text "Once upon a time, there was a ___ who lived in a ___. Every morning, they would ___ before going to ___. One day, they discovered a ___ that could ___."
+    required
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for completing the fill-in-the-blank questions!"
+end

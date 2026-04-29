@@ -1,0 +1,197 @@
+# field_survey_example.srp
+# Covers all 16 question types supported by the field rep PWA.
+# Use --validate-field to confirm compatibility before deploying.
+
+page "welcome" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Thank you for participating in our household study. This survey takes about 10 minutes. Your answers are kept confidential."
+  end
+end
+
+page "respondent_info" do
+  title "About You"
+
+  Age "respondent_age" do
+    text "What is your date of birth?"    
+  end
+
+  PhoneNumber "contact_number" do
+    text "What is the best phone number to reach you? (For follow-up only)"
+  end
+end
+
+page "household_screener" do
+  title "Household"
+
+  SingleSelect "primary_shopper" do
+    text "(Showing required) Are you the primary grocery shopper in your household?"
+     
+    option "Yes, I do most of the shopping"
+    option "Yes, I share shopping equally" do
+      action :skip_to, "brand_awareness"
+    end
+    option "No, someone else usually shops" do
+      action :skip_to, "brand_awareness"
+    end
+    required
+  end
+
+  Number "household_size" do
+    text "How many people live in your household, including yourself?"
+    min_value 1
+    max_value 20
+  end
+
+  Dropdown "income_range" do
+    text "What is your approximate annual household income?"
+    option "Under $25,000"
+    option "$25,000 – $49,999"
+    option "$50,000 – $74,999"
+    option "$75,000 – $99,999"
+    option "$100,000 – $149,999"
+    option "$150,000 or more"
+    option "Prefer not to say"
+  end
+end
+
+page "brand_awareness" do
+  title "Brand Usage"
+
+  MultiSelect "brands_purchased" do
+    text "Which of the following cleaning product brands have you purchased in the last 3 months? Select all that apply."
+     
+    option "Clorox"
+    option "Lysol"
+    option "Method"
+    option "Seventh Generation"
+    option "Mrs. Meyer's"
+    option "Simple Green"
+    option "Store brand / generic"
+    add_other_option
+    add_none_option
+  end
+
+  DatePicker "last_purchase_date" do
+    text "When did you last purchase a cleaning product?"
+     
+  end
+end
+
+page "usage_frequency" do
+  title "How You Use Products"
+
+  SingleSelect "cleaning_frequency" do
+    text "How often do you use household cleaning products?"
+     
+    option "Daily"
+    option "A few times a week"
+    option "Once a week"
+    option "A few times a month"
+    option "Less than once a month"
+  end
+
+  Ranking "product_priorities" do
+    text "Rank these factors from most to least important when choosing a cleaning product."
+     
+    item "Effectiveness"
+    item "Safety for family and pets"
+    item "Price / value"
+    item "Scent"
+    item "Eco-friendly / natural ingredients"
+    item "Brand trust"
+  end
+end
+
+page "satisfaction" do
+  title "Brand Satisfaction"
+
+  Rating "overall_satisfaction" do
+    text "Overall, how satisfied are you with the cleaning products you currently use?"
+    number_of_ranks 5
+    add_why_field
+     
+  end
+
+  NPS "recommend_brand" do
+    text "How likely are you to recommend your primary cleaning brand to a friend or family member?"
+    min_label "Not at all likely"
+    max_label "Extremely likely"
+     
+  end
+
+  Slider "attribute_ratings" do
+    text "Rate your primary cleaning brand on each attribute:"
+    min_value 1
+    max_value 7
+    default_value 4
+    min_label "Poor"
+    max_label "Excellent"
+     
+    row "Cleans effectively"
+    row "Safe to use around children"
+    row "Pleasant scent"
+    row "Good value for money"
+    row "Eco-friendly"
+  end
+end
+
+page "brand_perceptions" do
+  title "Brand Perceptions"
+
+  SingleSelectMatrix "brand_perception" do
+    text "For each statement, select how strongly you agree or disagree."
+     
+
+    row "This brand is worth the price"
+    row "I trust this brand's safety claims"
+    row "This brand is better than alternatives"
+    row "I would switch brands for a lower price"
+
+    column "Strongly agree"
+    column "Agree"
+    column "Neutral"
+    column "Disagree"
+    column "Strongly disagree"
+  end
+
+  MultiSelectMatrix "product_associations" do
+    text "Which of these qualities apply to each product type you use? Select all that apply."
+
+    row "All-purpose spray"
+    row "Disinfecting wipes"
+    row "Laundry detergent"
+    row "Dish soap"
+
+    column "Effective"
+    column "Gentle"
+    column "Affordable"
+    column "Eco-friendly"
+    column "Easy to use"
+
+    add_none_option
+  end
+end
+
+page "open_feedback" do
+  title "Your Feedback"
+
+  Discussion "improvement_ideas" do
+    text "What improvements would you most like to see in household cleaning products?"
+  end
+
+  OpenEnded "best_feature" do
+    text "What is the single best thing about the cleaning products you currently use?"
+     
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing this survey! Your feedback helps improve products for households like yours. The field representative will collect your response now."
+  end
+end

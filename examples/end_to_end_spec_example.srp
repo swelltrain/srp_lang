@@ -1,0 +1,130 @@
+# Complete product feedback survey
+# Exercises pages, groups, segmentation, piping, and actions in one file
+
+page "screener" do
+  title "Eligibility"
+
+  SingleSelect "is_customer" do
+    text "Are you a current customer?"
+    required
+
+    option "Yes, I use it regularly" do
+      segment "customer"
+    end
+    option "No" do
+      action :terminate
+    end
+  end
+
+  SingleSelect "plan_tier" do
+    text "Which plan are you on?"
+    show_only_if "customer"
+    required
+
+    option "Enterprise" do
+      segment "enterprise"
+    end
+    option "Professional"
+    option "Starter"
+  end
+end
+
+page "usage" do
+  title "Your Usage"
+
+  OpenEnded "first_name" do
+    text "What is your first name?"
+    required
+  end
+
+  MultiSelect "features_used" do
+    text "Which features do you use regularly?"
+    required
+
+    option "Dashboards"
+    option "Reports"
+    option "API access"
+    option "Integrations"
+  end
+
+  SingleSelect "usage_frequency" do
+    text "How often do you use the product?"
+    required
+
+    option "Daily" do
+      segment "power_user"
+    end
+    option "Weekly"
+    option "Monthly or less" do
+      action :skip_to, "satisfaction"
+    end
+  end
+end
+
+# Segment group — true when power_user AND enterprise are both active (AND logic)
+group "engaged_enterprise", "power_user", "enterprise"
+
+# Page group — bundles the two conditional deep-dive pages
+group "deep_dive", "deep_feedback", "enterprise_needs"
+
+page "deep_feedback" do
+  title "Feature Deep-Dive"
+  show_only_if "power_user"
+
+  SingleSelectMatrix "feature_ratings" do
+    text "Rate the features you rely on most."
+    rows_from "features_used"
+
+    column "Needs work"
+    column "Good"
+    column "Excellent"
+  end
+end
+
+page "enterprise_needs" do
+  title "Enterprise Capabilities"
+  show_only_if "enterprise"
+
+  ButtonCheckbox "key_needs" do
+    text "Which capabilities matter most to your team? (choose up to 3)"
+    max_selections 3
+    required
+
+    button "SSO / SAML"
+    button "Audit logs"
+    button "Role-based access"
+    button "Dedicated support"
+  end
+
+  # Power users on Enterprise plans qualify for early access
+  SingleSelect "beta_interest" do
+    text "Would you like early access to our beta feature program?"
+    show_only_if "engaged_enterprise"
+
+    option "Yes, sign me up"
+    option "Maybe later"
+    option "No thanks"
+  end
+end
+
+page "satisfaction" do
+  title "Overall Satisfaction"
+
+  NPS "nps_score" do
+    text "{{first_name}}, how likely are you to recommend us to a colleague?"
+    min_label "Not at all likely"
+    max_label "Extremely likely"
+    add_why_field
+    required
+  end
+end
+
+page "thank_you" do
+  title "Complete"
+
+  Notification "closing" do
+    text "Thanks, {{first_name}}! Your feedback on **{{features_used}}** helps us improve the product."
+  end
+
+  action :complete
+end

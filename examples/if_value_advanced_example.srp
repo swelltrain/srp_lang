@@ -1,0 +1,122 @@
+page "intro" do
+  title "Advanced if_value Features Demo"
+  "This survey demonstrates advanced if_value action features including list values and various operators."
+end
+
+page "age_ranges" do
+  title "Age Group Classification"
+  
+  OpenEnded "age_input" do
+    text "What is your age?"
+    required
+    numeric :min_value, 13, :max_value, 100
+    # Skip to teen section for specific ages
+    action :skip_to, "teen_survey", :if_value, "== 13, 14, 15, 16, 17"
+    # Skip to senior section for ages 65 and up
+    action :skip_to, "senior_survey", :if_value, ">= 65"
+  end
+end
+
+page "experience_check" do
+  title "Experience Level"
+  
+  OpenEnded "experience_years" do
+    text "How many years of experience do you have in your field?"
+    numeric :min_value, 0, :max_value, 50
+    # Terminate if they have no experience or too much experience
+    action terminate, :if_value, "== 0"
+    action :skip_to, "expert_path", :if_value, "> 20"
+  end
+end
+
+page "text_responses" do
+  title "Text Response Actions"
+  
+  OpenEnded "favorite_language" do
+    text "What's your favorite programming language? (Enter one word)"
+    required
+    # Skip to specific sections based on text responses
+    action :skip_to, "web_dev", :if_value, "== JavaScript, TypeScript, HTML, CSS"
+    action :skip_to, "systems_dev", :if_value, "== C, C++, Rust, Go"
+    action :skip_to, "data_science", :if_value, "== Python, R, Julia, SQL"
+  end
+end
+
+page "exclusion_example" do
+  title "Exclusion Logic"
+  
+  OpenEnded "household_size" do
+    text "What's your household size? (Number of people)"
+    numeric :min_value, 1, :max_value, 20
+    # Continue only if NOT in these specific sizes (use != for exclusion)
+    action terminate, :if_value, "!= 2, 3, 4"
+  end
+end
+
+page "teen_survey" do
+  title "Teen Survey"
+  "Welcome to the teen-specific survey section!"
+  
+  OpenEnded "grade_level" do
+    text "What grade are you in?"
+    numeric :min_value, 6, :max_value, 12
+    action complete, :if_value, "== 12"  # Complete if senior year
+  end
+  
+  action :complete
+end
+
+page "senior_survey" do
+  title "Senior Survey"
+  "Welcome to the senior-specific survey section!"
+  
+  OpenEnded "retirement_status" do
+    text "Are you retired? (Enter yes or no)"
+    action :skip_to, "retirement_questions", :if_value, "== yes, Yes, YES"
+  end
+  
+  action :complete
+end
+
+page "expert_path" do
+  title "Expert Questions"
+  "Welcome expert! Special questions for experienced professionals."
+  
+  OpenEnded "management_size" do
+    text "How many people do you manage?"
+    numeric :min_value, 0, :max_value, 1000
+    action :skip_to, "leadership", :if_value, ">= 10"
+  end
+  
+  action :complete
+end
+
+page "web_dev" do
+  title "Web Development"
+  "You're on the web development path!"
+  action :complete
+end
+
+page "systems_dev" do
+  title "Systems Development"
+  "You're on the systems programming path!"
+  action :complete
+end
+
+page "data_science" do
+  title "Data Science"
+  "You're on the data science path!"
+  action :complete
+end
+
+page "retirement_questions" do
+  title "Retirement Questions"
+  "Additional questions for retired individuals..."
+  action :complete
+end
+
+page "leadership" do
+  title "Leadership Questions"
+  "Questions for people managers..."
+  action :complete
+end

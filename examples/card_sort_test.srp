@@ -1,0 +1,65 @@
+page "intro" do
+  title "Card Sort Study"
+
+  Notification "welcome" do
+    text "Welcome! In this activity you'll sort website pages into categories where you'd expect to find them."
+  end
+end
+
+page "navigation_sort" do
+  title "Sort the Pages"
+
+  CardSort "website_navigation" do
+    text "Sort each page into the category where you'd expect to find it"
+    required
+    randomize_items
+
+    item "Our Team"
+    item "Pricing"
+    item "Blog"
+    item "Contact Support"
+    item "Terms of Service"
+    item "Case Studies"
+    item "API Documentation"
+    item "Press Releases"
+
+    category "Company Info"
+    category "Products"
+    category "Resources"
+    allow_unsorted
+  end
+end
+
+page "followup" do
+  title "Follow-up"
+
+  OpenEnded "sort_feedback" do
+    text "Were any pages difficult to categorize? Why?"
+  end
+
+  CardSort "feature_sort" do
+    text "Now sort these features into the section where you'd look for them in a settings menu"
+    required
+
+    item "Change password"
+    item "Billing history"
+    item "Email notifications"
+    item "Download my data"
+    item "Cancel subscription"
+    item "Connected apps"
+
+    category "Account"
+    category "Privacy & Security"
+    category "Notifications"
+    category "Billing"
+  end
+end
+
+page "thank_you" do
+  title "Complete"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thank you for completing the card sort! Your input will help us improve our navigation."
+  end
+end

@@ -1,0 +1,31 @@
+page "demographics" do
+  title "Demographics"
+
+  OpenEnded "age" do
+    text "What is your age?"
+    numeric :min_value, 18, :max_value, 120
+    required
+  end
+
+  OpenEnded "years_experience" do
+    text "How many years of experience do you have?"
+    numeric :min_value, 0, :max_value, 50
+    required
+  end
+
+  OpenEnded "height_inches" do
+    text "What is your height in inches?"
+    numeric :min_value, 36, :max_value, 96
+  end
+
+  OpenEnded "comments" do
+    text "Any additional comments?"
+    required
+  end
+end
+
+page "thanks" do
+  title "Thank You"
+  "Thank you for participating!"
+  action :complete
+end

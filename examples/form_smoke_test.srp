@@ -1,0 +1,32 @@
+# form_smoke_test.srp
+# Minimal DSL for Bundle 1 form renderer smoke test.
+# Uses only OpenEnded (the one type registered in Bundle 1).
+# Run with:
+#   bin/survey_srp examples/form_smoke_test.srp --style form --submission-url https://httpbin.org/post
+
+page "contact" do
+  title "Contact Us"
+
+  OpenEnded "full_name" do
+    text "Your full name"
+    required
+  end
+
+  OpenEnded "email_address" do
+    text "Your email address"
+    required
+  end
+
+  OpenEnded "message" do
+    text "Your message"
+    required
+  end
+end
+
+page "done" do
+  action :complete
+
+  Notification "thank_you" do
+    text "Thank you! We will get back to you soon."
+  end
+end

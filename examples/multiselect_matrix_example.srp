@@ -1,0 +1,76 @@
+# multiselect_matrix_example.srp - Testing MultiSelectMatrix question type
+
+page "brand_attributes" do
+  title "Brand Evaluation"
+  
+  # Basic MultiSelectMatrix
+  question1 = MultiSelectMatrix "brand_attributes" do
+    text "Which of these attributes apply to each brand? (Select all that apply)"
+    required
+    max_selections_per_row 3
+    
+    row "Apple"
+    row "Samsung"
+    row "Google"
+    
+    column "Innovative"
+    column "Reliable"
+    column "Affordable"
+    column "Premium"
+    
+    add_none_option
+    add_dont_know_option
+    add_other_option
+    add_why_field
+  end
+  
+  # MultiSelectMatrix with randomization
+  question2 = MultiSelectMatrix "product_features" do
+    text "Which features are important for these product categories?"
+    min_selections_per_row 1
+    max_selections_per_row 4
+    randomize_rows
+    randomize_columns
+    
+    row "Smartphones"
+    row "Laptops"
+    row "Tablets"
+    
+    column "Battery Life"
+    column "Camera Quality"
+    column "Processing Speed"
+    column "Storage Space"
+    column "Display Quality"
+    
+    add_none_option
+    add_dont_know_option
+    add_other_option
+  end
+end
+
+page "services" do
+  title "Service Evaluation"
+  
+  # MultiSelectMatrix for services
+  question1 = MultiSelectMatrix "service_aspects" do
+    text "Which aspects of these services have you experienced? (Multiple selections allowed)"
+    
+    row "Customer Support"
+    row "Technical Support" 
+    row "Sales Team"
+    row "Account Management"
+    
+    column "Responsive"
+    column "Knowledgeable"
+    column "Friendly"
+    column "Professional"
+    
+    add_why_field
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thanks for testing MultiSelectMatrix questions!"
+end

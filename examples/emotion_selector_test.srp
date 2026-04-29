@@ -1,0 +1,24 @@
+title "Emotion Selector Test Survey"
+
+page "default_emotions" do
+  text "Testing the EmotionSelector question type with default emotions."
+
+  EmotionSelector "feel_about_product" do
+    text "How do you feel about this product?"
+    required
+  end
+end
+
+page "custom_emotions" do
+  text "Testing EmotionSelector with custom emotions and a why field."
+
+  EmotionSelector "brand_reaction" do
+    text "How does this brand make you feel?"
+    emotion "excited",   label: "Excited",   emoji: "🤩"
+    emotion "curious",   label: "Curious",   emoji: "🤔"
+    emotion "satisfied",  label: "Satisfied",  emoji: "😌"
+    emotion "bored",     label: "Bored",     emoji: "😑"
+    emotion "annoyed",   label: "Annoyed",   emoji: "😤"
+    add_why_field
+  end
+end

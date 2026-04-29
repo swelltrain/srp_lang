@@ -1,0 +1,75 @@
+# contact-us-form
+# https://www.srpsurveys.com/access-request
+
+page "request" do
+  title "Request Early Access"
+
+  Notification "heads_up" do
+    text "This example form posts to a public URL.  Please don't post real info!"
+  end
+
+  OpenEnded "full_name" do
+    text "Your name"
+    required
+  end
+
+  OpenEnded "email" do 
+    text "Work email"
+    required
+  end
+
+  SingleSelect "use_case" do
+    text "What brings you here?"
+    required
+
+    option "Healthcare or legal — we can't store patient or client data" do
+      segment "regulated"
+    end
+
+    option "I want my forms defined in code and version-controlled" do
+      segment "developer"
+    end
+
+    option "I build forms for client websites (agency or freelancer)" do
+      segment "agency"
+    end
+
+    option "I'm replacing Typeform, Jotform, or a similar tool" do
+      segment "switcher"
+    end
+  end
+
+  OpenEnded "compliance_standard" do
+    text "Which compliance standard applies? (HIPAA, GDPR, SOC 2, etc.)"
+    show_only_if "regulated"
+  end
+
+  OpenEnded "tech_stack" do
+    text "What language or framework are you using?"
+    show_only_if "developer"
+  end
+
+  Number "client_sites" do
+    text "Roughly how many client sites do you manage?"
+    min_value 1
+    show_only_if "agency"
+  end
+
+  OpenEnded "current_tool" do
+    text "Which tool are you moving away from?"
+    show_only_if "switcher"
+  end
+
+  OpenEnded "notes" do
+    text "Anything else you'd like us to know? (optional)"
+  end
+end
+
+page "done" do
+  title "Thank You"
+  action :complete
+
+  Notification "thank_you" do
+    text "You're on the list. We'll be in touch shortly!"
+  end
+end

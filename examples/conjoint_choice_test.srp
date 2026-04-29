@@ -1,0 +1,77 @@
+page "intro" do
+  title "Product Preference Study"
+
+  Notification "intro_msg" do
+    text "We'd like to understand your product preferences. Please review each option carefully."
+  end
+end
+
+page "brand_choice" do
+  title "Which Would You Choose?"
+
+  ConjointChoice "brand_pref" do
+    text "Which product would you prefer?"
+    required
+
+    attribute "Brand"
+    attribute "Price"
+    attribute "Quality"
+
+    profile "Option A" do
+      level "Brand", "Nike"
+      level "Price", "$50"
+      level "Quality", "High"
+    end
+
+    profile "Option B" do
+      level "Brand", "Adidas"
+      level "Price", "$75"
+      level "Quality", "Medium"
+    end
+
+    profile "Option C" do
+      level "Brand", "Puma"
+      level "Price", "$40"
+      level "Quality", "Standard"
+    end
+
+    add_none_option
+  end
+end
+
+page "randomized_choice" do
+  title "Another Product Choice"
+
+  ConjointChoice "laptop_pref" do
+    text "Which laptop configuration best suits your needs?"
+
+    attribute "Processor"
+    attribute "RAM"
+    attribute "Storage"
+    attribute "Price"
+
+    profile "Budget Pick" do
+      level "Processor", "Intel Core i5"
+      level "RAM", "8GB"
+      level "Storage", "256GB SSD"
+      level "Price", "$699"
+    end
+
+    profile "Mid-Range" do
+      level "Processor", "Intel Core i7"
+      level "RAM", "16GB"
+      level "Storage", "512GB SSD"
+      level "Price", "$999"
+    end
+
+    profile "Premium" do
+      level "Processor", "Intel Core i9"
+      level "RAM", "32GB"
+      level "Storage", "1TB SSD"
+      level "Price", "$1,499"
+    end
+
+    randomize_profiles
+    add_none_option
+  end
+end

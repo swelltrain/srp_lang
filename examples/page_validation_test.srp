@@ -1,0 +1,42 @@
+# Test file to validate pages work correctly
+
+page "test_page" do
+  title "Test Page"
+  
+  SingleSelect "option_choice" do
+    text "Choose an option"
+    option "Continue"
+    option "Exit" do
+      action terminate
+    end
+  end
+  
+  # Valid page action
+  action :complete
+end
+
+page "valid_page" do
+  title "Valid Page"
+  
+  SingleSelect "option_choice_2" do
+    text "Choose an option"
+    option "Continue"
+    option "Exit" do
+      action terminate
+    end
+  end
+  
+  # This should be valid
+  action :complete
+end
+
+page "terminate_page" do
+  title "Terminate Page"
+  
+  Notification "termination_message" do
+    text "Thank you for your participation"
+  end
+  
+  # This should be valid
+  action :terminate
+end

@@ -1,0 +1,39 @@
+# multipart_example.srp - Testing new multipart question types
+
+page "contact_info" do
+  title "Contact Information"
+  
+  # US Address question
+  question1 = USAddress "home_address" do
+    text "Please enter your address:"
+    required
+  end
+  
+  # Phone number question
+  question2 = PhoneNumber "contact_phone" do
+    text "What's your phone number?"
+    required
+  end
+  
+  # Age question
+  question3 = Age "birth_date" do
+    text "What's your date of birth?"
+    required
+  end
+end
+
+page "international" do
+  title "International Information"
+  
+  # International Address question
+  question1 = InternationalAddress "intl_address" do
+    text "Please enter your international address:"
+    required
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for providing your information!"
+end

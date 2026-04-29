@@ -1,0 +1,22 @@
+# Simple test for column actions
+
+page "test_page" do
+  title "Column Action Test"
+  
+  SingleSelectMatrix "test_matrix" do
+    text "Test matrix with column action"
+    required
+    
+    row "Test Row"
+    
+    column "Test Column" do
+      action :skip_to, "end_page", :if_row, "Test Row"
+    end
+  end
+end
+
+page "end_page" do
+  title "End Page"
+  "This page is reached via column action"
+  action :complete
+end

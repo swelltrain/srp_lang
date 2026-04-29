@@ -1,0 +1,42 @@
+title "Autosuggest Test Survey"
+
+page "intro" do
+  text "Testing the Autosuggest question type."
+
+  Notification "welcome" do
+    text "This survey tests autosuggest (typeahead) inputs."
+  end
+end
+
+page "brands" do
+  Autosuggest "brand" do
+    text "Which brand comes to mind?"
+    suggestions ["Nike", "Adidas", "Puma", "Reebok", "New Balance", "Under Armour"]
+    allow_custom false
+    placeholder "Start typing a brand..."
+    required
+  end
+
+  Autosuggest "color" do
+    text "What is your favorite color?"
+    suggestions ["Red", "Blue", "Green", "Yellow", "Purple", "Orange", "Black", "White"]
+    placeholder "Type a color..."
+  end
+end
+
+page "city" do
+  Autosuggest "city" do
+    text "Which city do you live in?"
+    suggestions "/api/cities"
+    placeholder "Type your city..."
+    required
+  end
+end
+
+page "done" do
+  action :complete
+
+  Notification "farewell" do
+    text "Thank you for completing the autosuggest test survey."
+  end
+end

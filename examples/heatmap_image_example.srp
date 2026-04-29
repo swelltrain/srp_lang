@@ -1,0 +1,78 @@
+# heatmap_image_example.srp - Testing Image-Based HeatMap Rendering
+
+page "ui_mockup_feedback" do
+  title "Website Mockup Feedback"
+
+  HeatMap "homepage_clicks" do
+    text "Click on areas of the homepage that catch your attention"
+    image "https://dummyimage.com/800x600/e0e0e0/808080?text=Homepage+Mockup"
+    required
+    min_clicks 3
+    max_clicks 10
+
+    category "Primary Navigation" do
+      color "blue"
+    end
+
+    category "Call to Action" do
+      color "green"
+    end
+
+    category "Content Area" do
+      color "orange"
+    end
+
+    category "Footer Links" do
+      color "purple"
+    end
+  end
+end
+
+page "product_page_timed" do
+  title "Product Page Quick Test"
+
+  TimedHeatMap "product_attention" do
+    text "You have 30 seconds - click on elements you notice first"
+    image "https://dummyimage.com/800x800/f0f0f0/606060?text=Product+Page"
+    time_limit 30
+    min_clicks 1
+    max_clicks 20
+
+    category "Product Image" do
+      color "#ff0000"
+    end
+
+    category "Price" do
+      color "#00ff00"
+    end
+
+    category "Add to Cart" do
+      color "#0000ff"
+    end
+
+    category "Reviews" do
+      color "#ff00ff"
+    end
+  end
+end
+
+page "sticky_notes" do
+  title "Feature Suggestions"
+
+  StickyNote "feature_ideas" do
+    text "Place sticky notes where you'd like new features"
+    image "https://dummyimage.com/600x800/d0d0d0/707070?text=App+Interface"
+    min_clicks 2
+    max_clicks 8
+
+    category "New Feature"
+    category "Improvement"
+    category "Bug"
+  end
+end
+
+page "complete" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your feedback on our designs!"
+end

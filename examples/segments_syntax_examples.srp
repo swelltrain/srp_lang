@@ -1,0 +1,166 @@
+# Segment Syntax Examples
+# This file demonstrates the different ways to use segments in Survey DSL
+
+page "segment_examples" do
+  title "Segment Syntax Examples"
+  
+  # Example 1: Simple option segments (no conditions)
+  SingleSelect "communication_method" do
+    text "What is your preferred communication method?"
+    
+    option "Email" do
+      segment "email_users"  # Simple segment - activates when option is selected
+    end
+    
+    option "Phone" do
+      segment "phone_users"  # Simple segment
+    end
+    
+    option "Text/SMS" do
+      segment "mobile_users"  # Simple segment
+    end
+  end
+  
+  # Example 2: Matrix with row segments (if_column conditions)
+  SingleSelectMatrix "service_ratings" do
+    text "Rate our services:"
+    
+    row "Support Quality" do
+      segment "dissatisfied_support", :if_column, "Poor"           # Single value condition
+      segment "happy_support", :if_column, "Excellent", "Good"    # Multiple values condition
+    end
+    
+    row "Product Quality" do
+      segment "dissatisfied_product", :if_column, "Poor", "Fair"  # Multiple values
+      segment "product_champions", :if_column, "Excellent"        # Single value
+    end
+    
+    column "Excellent"
+    column "Good" 
+    column "Fair"
+    column "Poor"
+  end
+  
+  # Example 3: Matrix with column segments (if_row conditions)
+  SingleSelectMatrix "aspect_ratings" do
+    text "Rate different aspects:"
+    
+    row "User Experience"
+    row "Performance"
+    row "Reliability" 
+    row "Value for Money"
+    
+    column "Excellent" do
+      segment "ux_champions", :if_row, "User Experience"              # Single row condition
+      segment "performance_lovers", :if_row, "Performance"            # Single row condition
+      segment "overall_satisfied", :if_row, "User Experience", "Performance", "Reliability"  # Multiple rows
+    end
+    
+    column "Good"
+    
+    column "Fair" do
+      segment "needs_improvement", :if_row, "Performance", "Reliability"  # Multiple row condition
+    end
+    
+    column "Poor" do
+      segment "ux_issues", :if_row, "User Experience"                 # Users who rate UX as poor
+      segment "performance_issues", :if_row, "Performance"            # Users who rate performance as poor  
+      segment "reliability_issues", :if_row, "Reliability"           # Users who rate reliability as poor
+      segment "value_issues", :if_row, "Value for Money"             # Users who rate value as poor
+    end
+  end
+end
+
+# Example 4: Conditional pages using segments
+page "email_follow_up" do
+  title "Email Communication Preferences"
+  show_only_if "email_users"  # Only shown to users who prefer email
+  
+  SingleSelect "email_frequency" do
+    text "How often would you like to receive email updates?"
+    
+    option "Daily"
+    option "Weekly"
+    option "Monthly"
+    option "Only important updates"
+  end
+end
+
+page "support_improvement" do
+  title "Help Us Improve Support"
+  show_only_if "dissatisfied_support", "dissatisfied_product"  # Shown to users dissatisfied with either
+  
+  MultiSelect "improvement_areas" do
+    text "What areas need the most improvement?"
+    
+    option "Response time"
+    option "Staff knowledge"
+    option "Problem resolution"
+    option "Communication clarity"
+  end
+end
+
+page "champions_program" do
+  title "Join Our Champions Program"
+  show_only_if "happy_support", "product_champions", "overall_satisfied"  # Multiple possible segments
+  
+  SingleSelect "champions_interest" do
+    text "Would you be interested in joining our customer champions program?"
+    
+    option "Yes, I'd love to help!"
+    option "Tell me more first"
+    option "No, thank you"
+  end
+end
+
+# Example 5: Conditional questions within a page
+page "detailed_feedback" do
+  title "Additional Feedback"
+  
+  # This question only appears for users with UX issues
+  OpenEnded "ux_issue_details" do
+    text "Please describe the specific user experience issues you encountered:"
+    show_only_if "ux_issues"
+    required
+  end
+  
+  # This question only appears for users with performance issues  
+  MultiSelect "performance_problems" do
+    text "Which performance areas were problematic?"
+    show_only_if "performance_issues"
+    min_selections 1
+    
+    option "Page load times"
+    option "Search functionality"
+    option "Form submission"
+    option "Navigation speed"
+    option "Mobile performance"
+  end
+  
+  # This question appears for anyone who needs improvement
+  SingleSelect "rating_improvement" do
+    text "What would encourage you to rate us higher next time?"
+    show_only_if "needs_improvement"
+    
+    option "Faster performance"
+    option "Better reliability"
+    option "Improved features"
+    option "Lower pricing"
+    option "Better support"
+  end
+  
+  # This question appears for everyone (no show_only_if)
+  OpenEnded "general_feedback" do
+    text "Any other comments or suggestions?"
+  end
+end
+
+page "thank_you" do
+  title "Thank You!"
+  
+  Notification "completion_message" do
+    text "Thank you for your feedback! Your responses help us improve our services."
+  end
+  
+  action :complete
+end

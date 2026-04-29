@@ -1,0 +1,41 @@
+page "intro" do
+  title "Welcome"
+
+  Notification "welcome_msg" do
+    text "Help us learn more about your preferences with a series of quick choices."
+  end
+end
+
+page "choices_page" do
+  title "Your Preferences"
+
+  ThisOrThat "drink_preference" do
+    text "Which do you prefer to start your morning?"
+    this "Coffee"
+    that "Tea"
+    required
+  end
+
+  ThisOrThat "work_style" do
+    text "Which work environment suits you better?"
+    this "Office"
+    that "Remote"
+    add_why_field
+  end
+
+  ThisOrThat "vacation_style" do
+    text "For vacation, which do you prefer?"
+    this "Beach"
+    that "Mountains"
+    required
+  end
+end
+
+page "complete" do
+  title "Thank You"
+  action :complete
+
+  Notification "completion_message" do
+    text "Thanks for sharing your preferences!"
+  end
+end

@@ -1,0 +1,62 @@
+# example.srp for client: FooBar
+
+page "page1" do
+  title "First Page"
+  
+  OpenEnded "Q1" do
+    text "How do you feel about this?"
+    required
+  end
+
+  SingleSelect "Q2" do
+    text "What's your preference?"
+    required
+    randomized
+    
+    option "I like plain" do
+      action terminate
+    end
+    
+    option "Seasonal for me" do
+      action skip_to "page3"
+    end
+    
+    option "Gimme trendy"
+  end
+end
+
+page "page2" do
+  title "Tell me about plain"
+  
+  OpenEnded "Q3" do
+    text "What do you like about plain design?"
+  end
+end
+
+page "page3" do
+  title "Seasonal Preferences"
+  
+  SingleSelect "Q4" do
+    text "Which season do you prefer?"
+    
+    option "Spring"
+    option "Summer" 
+    option "Fall"
+    option "Winter"
+  end
+end
+
+page "page13" do
+  action :terminate
+  title "Thank you!"
+  text "Thank you for your time, but you don't fit the profile."
+end
+
+page "page14" do
+  action :complete
+  title "Thank you!"
+  text "Thank you for your time, you will be granted your reward."
+end
+
+group "term_group", "page13"
+group "complete_group", "page14"

@@ -1,0 +1,32 @@
+# matrix_example.srp - Testing matrix questions
+
+page "drinks" do
+  title "Beverage Preferences"
+  
+  question1 = SingleSelectMatrix "beverage_preferences" do
+    text "I prefer coke over"
+    required
+    randomize_rows
+    
+    row "sprite"
+    row "root beer" do
+      action :skip_to, "page2", :if_column, "strongly disagree"
+    end
+    row "water"
+    
+    column "strongly agree"
+    column "agree" 
+    column "neutral"
+    column "disagree"
+    column "strongly disagree"
+  end
+end
+
+page "page2" do
+  title "Follow up"
+  text "Thanks for your honest feedback about root beer!"
+  
+  question1 = OpenEnded "other_beverages" do
+    text "What other beverages do you enjoy?"
+  end
+end

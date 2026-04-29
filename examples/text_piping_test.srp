@@ -1,0 +1,68 @@
+# text_piping_test.srp - Demonstrates text piping with {{question_name}} placeholders
+# Run with: ruby survey_dsl.rb examples/text_piping_test.srp --outfile examples/simple/text_piping_test.html
+# Or ICMIB: ruby survey_dsl.rb examples/text_piping_test.srp --outfile examples/icmib/text_piping_test.html --style icmib
+
+# Page 1: Source questions
+page "preferences" do
+  title "Your Preferences"
+
+  SingleSelect "favorite_fruit" do
+    text "What is your favorite fruit?"
+    option "Apple"
+    option "Banana"
+    option "Cherry"
+    option "Mango"
+    required
+  end
+
+  MultiSelect "hobbies" do
+    text "What are your hobbies? (select all that apply)"
+    option "Reading"
+    option "Gaming"
+    option "Cooking"
+    option "Hiking"
+    option "Photography"
+    required
+  end
+
+  OpenEnded "user_name" do
+    text "What is your first name?"
+    required
+  end
+end
+
+# Page 2: Questions that pipe from page 1 answers
+page "follow_up" do
+  title "Follow-Up Questions"
+
+  Notification "greeting" do
+    text "Hello {{user_name}}! Thanks for sharing your preferences."
+  end
+
+  SingleSelect "fruit_rating" do
+    text "You selected **{{favorite_fruit}}** as your favorite fruit. How would you rate it?"
+    option "Excellent"
+    option "Good"
+    option "Average"
+    option "Poor"
+  end
+
+  SingleSelect "hobby_time" do
+    text "You enjoy {{hobbies}}. How much time do you spend on these hobbies per week?"
+    option "Less than 2 hours"
+    option "2-5 hours"
+    option "5-10 hours"
+    option "More than 10 hours"
+  end
+end
+
+# Page 3: Completion
+page "completion" do
+  title "Thank You"
+
+  Notification "thanks" do
+    text "Thank you {{user_name}} for completing this survey about {{favorite_fruit}} and your hobbies!"
+  end
+
+  action :complete
+end

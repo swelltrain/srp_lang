@@ -1,0 +1,95 @@
+# notification_demo.srp - ICMIB notification and information display examples
+# Run with: ruby survey_dsl.rb --file examples/icmib/notification_demo.srp --style icmib
+
+page "introduction" do
+  title "Welcome to the Survey"
+  
+  Notification "welcome_intro" do
+    text "Welcome! This survey demonstrates how notification questions work in the ICMIB style. Notifications are perfect for providing instructions, context, or important information to survey respondents."
+  end
+end
+
+page "instructions" do
+  title "Survey Instructions"
+  
+  Notification "survey_instructions" do
+    text "Please answer all questions honestly and completely. Your responses are confidential and will be used to improve our services. The survey should take approximately 5-10 minutes to complete."
+  end
+  
+  SingleSelect "instructions_understood" do
+    text "Do you understand the instructions above?"
+    required
+    
+    option "Yes, I'm ready to continue"
+    option "I need clarification"
+  end
+end
+
+page "section_break" do
+  title "Personal Information"
+  
+  Notification "section_intro" do
+    text "The next few questions will ask about your background and experience. This information helps us understand our user base better."
+  end
+  
+  OpenEnded "current_role" do
+    text "What is your current role or occupation?"
+    required
+  end
+  
+  SingleSelect "role_duration" do
+    text "How long have you been in this role?"
+    
+    option "Less than 1 year"
+    option "1-3 years"
+    option "3-5 years"
+    option "5-10 years"
+    option "More than 10 years"
+  end
+end
+
+page "mid_survey" do
+  title "Halfway There!"
+  
+  Notification "progress_update" do
+    text "Great job! You're halfway through the survey. The next section focuses on your experience with our product or service."
+  end
+  
+  Rating "survey_experience" do
+    text "How would you rate your overall experience so far?"
+    number_of_ranks 5
+    required
+  end
+  
+  MultiSelect "services_used" do
+    text "What aspects of our service have you used?"
+    min_selections 1
+    
+    option "Customer Support"
+    option "Online Platform"
+    option "Mobile App"
+    option "Documentation"
+    option "Training Materials"
+  end
+end
+
+page "conclusion" do
+  title "Final Thoughts"
+  
+  Notification "final_section" do
+    text "Thank you for your responses so far! We have just one final question to wrap up."
+  end
+  
+  Discussion "final_feedback" do
+    text "Any additional comments, suggestions, or feedback you'd like to share?"
+  end
+end
+
+page "thank_you" do
+  action :complete
+  title "Survey Complete"
+  
+  Notification "completion_message" do
+    text "Thank you for participating in our survey! Your feedback is valuable and will help us continue to improve our services. You may now close this window."
+  end
+end
