@@ -1,32 +1,217 @@
-# matrix_example.srp - Testing matrix questions
 
-page "drinks" do
-  title "Beverage Preferences"
-  
-  question1 = SingleSelectMatrix "beverage_preferences" do
-    text "I prefer coke over"
-    required
-    randomize_rows
-    
-    row "sprite"
-    row "root beer" do
-      action :skip_to, "page2", :if_column, "strongly disagree"
-    end
-    row "water"
-    
-    column "strongly agree"
-    column "agree" 
-    column "neutral"
-    column "disagree"
-    column "strongly disagree"
+page "basic_matrix" do
+  title "Basic Matrix Questions"
+
+  SingleSelectMatrix "basic_satisfaction" do
+    text "How satisfied are you with the following services?"
+
+    row "Customer Service"
+    row "Product Quality"
+    row "Delivery Speed"
+    row "Website Experience"
+
+    column "Very Satisfied"
+    column "Satisfied"
+    column "Neutral"
+    column "Dissatisfied"
+    column "Very Dissatisfied"
   end
 end
 
-page "page2" do
-  title "Follow up"
-  text "Thanks for your honest feedback about root beer!"
-  
-  question1 = OpenEnded "other_beverages" do
-    text "What other beverages do you enjoy?"
+page "none_option" do
+  title "Matrix with None Option"
+
+  SingleSelectMatrix "usage_frequency" do
+    text "How often do you use the following features?"
+
+    row "Mobile App"
+    row "Website Portal"
+    row "Customer Support"
+    row "Email Notifications"
+
+    column "Daily"
+    column "Weekly"
+    column "Monthly"
+    column "Rarely"
+
+    add_none_option
+  end
+end
+
+page "dont_know_option" do
+  title "Matrix with Don't Know Option"
+
+  SingleSelectMatrix "brand_awareness" do
+    text "How familiar are you with these brands?"
+
+    row "Brand Alpha"
+    row "Brand Beta"
+    row "Brand Gamma"
+    row "Brand Delta"
+
+    column "Very Familiar"
+    column "Somewhat Familiar"
+    column "Not Familiar"
+
+    add_dont_know_option
+  end
+end
+
+page "other_column" do
+  title "Matrix with Other Column"
+
+  SingleSelectMatrix "preferred_channels" do
+    text "What is your preferred communication method for each topic?"
+
+    row "Billing Questions"
+    row "Technical Support"
+    row "Product Updates"
+    row "Marketing Offers"
+
+    column "Email"
+    column "Phone"
+    column "Chat"
+    column "SMS"
+
+    add_other_column
+  end
+end
+
+page "other_row" do
+  title "Matrix with Other Row"
+
+  SingleSelectMatrix "service_ratings" do
+    text "Please rate each service area:"
+    required
+
+    row "Account Management"
+    row "Technical Support"
+    row "Billing Services"
+
+    column "Excellent"
+    column "Good"
+    column "Fair"
+    column "Poor"
+
+    add_other_row
+  end
+end
+
+page "all_options" do
+  title "Matrix with All Options Combined"
+
+  SingleSelectMatrix "comprehensive_feedback" do
+    text "Please provide your feedback on these aspects of our service:"
+    required
+
+    row "Response Time"
+    row "Staff Knowledge"
+    row "Problem Resolution"
+    row "Follow-up Communication"
+
+    column "Excellent"
+    column "Good"
+    column "Average"
+    column "Below Average"
+    column "Poor"
+
+    add_none_option
+    add_dont_know_option
+    add_other_column
+    add_other_row
+    add_why_field
+  end
+end
+
+page "segments_matrix" do
+  title "Matrix with Segments"
+
+  SingleSelectMatrix "product_interest" do
+    text "Which products are you interested in purchasing?"
+
+    row "Laptop" do
+      segment "tech_buyer", :if_column, "Very Interested", "Interested"
+    end
+
+    row "Smartphone" do
+      segment "mobile_user", :if_column, "Very Interested"
+    end
+
+    row "Tablet" do
+      segment "portable_device_user", :if_column, "Very Interested", "Interested"
+    end
+
+    column "Very Interested"
+    column "Interested"
+    column "Not Interested"
+
+    add_dont_know_option
+  end
+
+  SingleSelect "follow_up" do
+    text "Would you like us to contact you about these products?"
+    show_only_if "tech_buyer"
+
+    option "Yes, please contact me"
+    option "No, just keep me updated via email"
+    option "No contact needed"
+  end
+end
+
+page "required_matrix" do
+  title "Required Matrix Questions"
+
+  SingleSelectMatrix "satisfaction_required" do
+    text "Please rate your satisfaction with our services (all fields required):"
+    required
+
+    row "Overall Service"
+    row "Value for Money"
+    row "Customer Support"
+
+    column "Very Satisfied"
+    column "Satisfied"
+    column "Neutral"
+    column "Dissatisfied"
+    column "Very Dissatisfied"
+
+    add_none_option
+  end
+end
+
+page "why_field_matrix" do
+  title "Matrix with Why Field"
+
+  SingleSelectMatrix "improvement_areas" do
+    text "Which areas need the most improvement?"
+
+    row "Product Features"
+    row "Customer Service"
+    row "Pricing"
+    row "User Experience"
+
+    column "High Priority"
+    column "Medium Priority"
+    column "Low Priority"
+    column "Not Applicable"
+
+    add_why_field
+  end
+end
+
+page "thank_you" do
+  title "Thank You!"
+
+  Notification "thank_you_message" do
+    text "Thank you for testing our matrix question rendering! This survey demonstrated:"
+    text "• Basic matrix questions"
+    text "• None of the above option"
+    text "• Don't know option"
+    text "• Other column option"
+    text "• Other row with text input"
+    text "• All options combined"
+    text "• Segment activation"
+    text "• Required matrix questions"
+    text "• Why field for additional feedback"
   end
 end
