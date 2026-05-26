@@ -1,6 +1,5 @@
 # field_survey_example.srp
 # Covers all 16 question types supported by the field rep PWA.
-# Use --validate-field to confirm compatibility before deploying.
 
 page "welcome" do
   title "Welcome"
